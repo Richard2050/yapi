@@ -1,18 +1,5 @@
 import React, { PureComponent as Component } from 'react';
-import {
-  Upload,
-  Icon,
-  message,
-  Select,
-  Tooltip,
-  Button,
-  Spin,
-  Switch,
-  Modal,
-  Radio,
-  Input,
-  Checkbox
-} from 'antd';
+import { Upload, Icon, message, Select, Tooltip, Button, Spin, Switch, Modal, Radio, Input, Checkbox } from 'antd';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import './ProjectData.scss';
@@ -307,11 +294,7 @@ class ProjectData extends Component {
       this.state.curExportType &&
       exportDataModule[this.state.curExportType] &&
       exportDataModule[this.state.curExportType].route;
-    let exportHref = handleExportRouteParams(
-      exportUrl,
-      this.state.exportContent,
-      this.state.isWiki
-    );
+    let exportHref = handleExportRouteParams(exportUrl, this.state.exportContent, this.state.isWiki);
 
     // console.log('inter', this.state.exportContent);
     return (
@@ -322,11 +305,7 @@ class ProjectData extends Component {
               <div>
                 <h3>
                   数据导入&nbsp;
-                  <a
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    href="https://yapi.ymfe.org/documents/data.html"
-                  >
+                  <a target="_blank" rel="noopener noreferrer" href="https://yapi.ymfe.org/documents/data.html">
                     <Tooltip title="点击查看文档">
                       <Icon type="question-circle-o" />
                     </Tooltip>
@@ -379,10 +358,7 @@ class ProjectData extends Component {
                         <p>不导入已存在的接口</p>
                         <br />
                         <h3 style={{ color: 'white' }}>智能合并</h3>
-                        <p>
-                          已存在的接口，将合并返回数据的 response，适用于导入了 swagger
-                          数据，保留对数据结构的改动
-                        </p>
+                        <p>已存在的接口，将合并返回数据的 response，适用于导入了 swagger 数据，保留对数据结构的改动</p>
                         <br />
                         <h3 style={{ color: 'white' }}>完全覆盖</h3>
                         <p>不保留旧数据，完全使用新数据，适用于接口定义完全交给后端定义</p>
@@ -442,9 +418,7 @@ class ProjectData extends Component {
                           e.stopPropagation();
                         }}
                         dangerouslySetInnerHTML={{
-                          __html: this.state.curImportType
-                            ? importDataModule[this.state.curImportType].desc
-                            : null
+                          __html: this.state.curImportType ? importDataModule[this.state.curImportType].desc : null
                         }}
                       />
                     </Dragger>
@@ -485,10 +459,7 @@ class ProjectData extends Component {
                 {this.state.curExportType ? (
                   <div>
                     <p className="export-desc">{exportDataModule[this.state.curExportType].desc}</p>
-                    <a 
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      href={exportHref}>
+                    <a target="_blank" rel="noopener noreferrer" href={exportHref}>
                       <Button className="export-button" type="primary" size="large">
                         {' '}
                         导出{' '}
