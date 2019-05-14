@@ -1,0 +1,17 @@
+{{each interfaceList}}
+====src/main/java/{{$value.name}}.java
+import java.util.Map;
+{{if $value.$uid>0}}
+import java.util.ArrayList;
+{{/if}}
+public class {{$value.name}} {
+  {{each $value.list}}
+    {{include './function.art' $value}}
+  {{/each}}
+}
+{{/each}}
+
+
+====src/resources/application.properties
+application.name={{projectInfo.name}}
+application.tag={{projectInfo.tag.desc}}

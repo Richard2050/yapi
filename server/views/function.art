@@ -1,0 +1,8 @@
+
+public static String {{path.replace(/\//g,'')}}(
+  {{each req_query}}
+     {{include './parameter.art' $value}}
+  {{/each}}
+) {
+    return {{@res_body}}
+}
