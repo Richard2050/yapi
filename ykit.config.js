@@ -9,9 +9,9 @@ var assetsPluginInstance = new AssetsPlugin({
   }
 });
 var fs = require('fs');
-var package = require('./package.json');
+var pkg = require('./package.json');
 var yapi = require('./server/yapi');
-var isWin = require('os').platform() === 'win32'
+var isWin = require('os').platform() === 'win32';
 
 var compressPlugin = new CompressionPlugin({
   asset: '[path].gz[query]',
@@ -24,9 +24,7 @@ var compressPlugin = new CompressionPlugin({
 function createScript(plugin, pathAlias) {
   let options = plugin.options ? JSON.stringify(plugin.options) : null;
   if (pathAlias === 'node_modules') {
-    return `"${plugin.name}" : {module: require('yapi-plugin-${
-      plugin.name
-    }/client.js'),options: ${options}}`;
+    return `"${plugin.name}" : {module: require('yapi-plugin-${plugin.name}/client.js'),options: ${options}}`;
   }
   return `"${plugin.name}" : {module: require('${pathAlias}/yapi-plugin-${
     plugin.name
@@ -79,7 +77,9 @@ module.exports = {
           defaultQuery.plugins.push(['import', { libraryName: 'antd' }]);
           return defaultQuery;
         },
-        exclude: isWin ? /(tui-editor|node_modules\\(?!_?(yapi-plugin|json-schema-editor-visual)))/ : /(tui-editor|node_modules\/(?!_?(yapi-plugin|json-schema-editor-visual)))/
+        exclude: isWin
+          ? /(tui-editor|node_modules\\(?!_?(yapi-plugin|json-schema-editor-visual)))/
+          : /(tui-editor|node_modules\/(?!_?(yapi-plugin|json-schema-editor-visual)))/
       }
     }
   ],
@@ -126,7 +126,7 @@ module.exports = {
         baseConfig.plugins.push(
           new this.webpack.DefinePlugin({
             'process.env.NODE_ENV': JSON.stringify(ENV_PARAMS),
-            'process.env.version': JSON.stringify(package.version),
+            'process.env.version': JSON.stringify(pkg.version),
             'process.env.versionNotify': yapi.WEBCONFIG.versionNotify
           })
         );
@@ -151,10 +151,7 @@ module.exports = {
           test: /\.less$/,
           loader: ykit.ExtractTextPlugin.extract(
             require.resolve('style-loader'),
-            require.resolve('css-loader') +
-              '?sourceMap!' +
-              require.resolve('less-loader') +
-              '?sourceMap'
+            require.resolve('css-loader') + '?sourceMap!' + require.resolve('less-loader') + '?sourceMap'
           )
         });
 
@@ -170,10 +167,7 @@ module.exports = {
         baseConfig.module.loaders.push({
           test: /\.(sass|scss)$/,
           loader: ykit.ExtractTextPlugin.extract(
-            require.resolve('css-loader') +
-              '?sourceMap!' +
-              require.resolve('sass-loader') +
-              '?sourceMap'
+            require.resolve('css-loader') + '?sourceMap!' + require.resolve('sass-loader') + '?sourceMap'
           )
         });
 
