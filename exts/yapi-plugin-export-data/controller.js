@@ -9,6 +9,7 @@ const markdownItAnchor = require('markdown-it-anchor');
 const markdownItTableOfContents = require('markdown-it-table-of-contents');
 const defaultTheme = require('./defaultTheme.js');
 const md = require('../../common/markdown');
+const javaProjectGenerator = require('./javaProjectGenerator.js');
 
 // const htmlToPdf = require("html-pdf");
 class exportController extends baseController {
@@ -17,7 +18,6 @@ class exportController extends baseController {
     this.catModel = yapi.getInst(interfaceCatModel);
     this.interModel = yapi.getInst(interfaceModel);
     this.projectModel = yapi.getInst(projectModel);
-    
   }
 
   async handleListClass(pid, status) {
@@ -34,7 +34,7 @@ class exportController extends baseController {
         newResult.push(item);
       }
     }
-    
+
     return newResult;
   }
 
@@ -100,6 +100,12 @@ class exportController extends baseController {
           ctx.set('Content-Disposition', `attachment; filename=api.json`);
           return (ctx.body = tp);
         }
+        case 'java': {
+          let data = await javaProjectGenerator(ctx, this, pid, curProject, list);
+          ctx.set('Content-Type', 'application/octet-stream'); //因为被模板引擎修改
+          ctx.set('Content-Disposition', `attachment; filename=project.zip`);
+          return (ctx.body = data);
+        }
         default: {
           //默认为html
           tp = await createHtml.bind(this)(list);
@@ -125,13 +131,10 @@ class exportController extends baseController {
       // require('fs').writeFileSync('./a.html', tp);
       let left;
       // console.log('tp',tp);
-      let content = tp.replace(
-        /<div\s+?class="table-of-contents"\s*>[\s\S]*?<\/ul>\s*<\/div>/gi,
-        function(match) {
-          left = match;
-          return '';
-        }
-      );
+      let content = tp.replace(/<div\s+?class="table-of-contents"\s*>[\s\S]*?<\/ul>\s*<\/div>/gi, function(match) {
+        left = match;
+        return '';
+      });
 
       return createHtml5(left || '', content);
     }
