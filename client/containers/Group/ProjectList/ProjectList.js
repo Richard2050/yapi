@@ -3,12 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Row, Col, Button, Tooltip } from 'antd';
 import { Link } from 'react-router-dom';
-import {
-  addProject,
-  fetchProjectList,
-  delProject,
-  changeUpdateModal
-} from '../../../reducer/modules/project';
+import { addProject, fetchProjectList, delProject, changeUpdateModal } from '../../../reducer/modules/project';
 import ProjectCard from '../../../components/ProjectCard/ProjectCard.js';
 import ErrMsg from '../../../components/ErrMsg/ErrMsg.js';
 import { autobind } from 'core-decorators';
@@ -131,7 +126,7 @@ class ProjectList extends Component {
           {followProject.map((item, index) => {
             return (
               <Col xs={8} lg={6} xxl={4} key={index}>
-                <ProjectCard projectData={item} callbackResult={this.receiveRes} />
+                <ProjectCard projectData={item} refreshProjectList={this.receiveRes} />
               </Col>
             );
           })}
@@ -145,7 +140,7 @@ class ProjectList extends Component {
           {noFollow.map((item, index) => {
             return (
               <Col xs={8} lg={6} xxl={4} key={index}>
-                <ProjectCard projectData={item} callbackResult={this.receiveRes} isShow={isShow} />
+                <ProjectCard projectData={item} refreshProjectList={this.receiveRes} isShow={isShow} />
               </Col>
             );
           })}
@@ -188,7 +183,7 @@ class ProjectList extends Component {
           {/* {projectData.length ? projectData.map((item, index) => {
             return (
               <Col xs={8} md={6} xl={4} key={index}>
-                <ProjectCard projectData={item} callbackResult={this.receiveRes} />
+                <ProjectCard projectData={item} refreshProjectList={this.receiveRes} />
               </Col>);
           }) : <ErrMsg type="noProject" />} */}
           {this.props.currGroup.type === 'private' ? (
@@ -197,11 +192,7 @@ class ProjectList extends Component {
             projectData.map((item, index) => {
               return (
                 <Col xs={8} lg={6} xxl={4} key={index}>
-                  <ProjectCard
-                    projectData={item}
-                    callbackResult={this.receiveRes}
-                    isShow={isShow}
-                  />
+                  <ProjectCard projectData={item} refreshProjectList={this.receiveRes} isShow={isShow} />
                 </Col>
               );
             })

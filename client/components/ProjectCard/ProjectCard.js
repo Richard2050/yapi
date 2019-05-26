@@ -39,7 +39,7 @@ class ProjectCard extends Component {
     projectData: PropTypes.object,
     uid: PropTypes.number,
     inFollowPage: PropTypes.bool,
-    callbackResult: PropTypes.func,
+    refreshProjectList: PropTypes.func,
     history: PropTypes.object,
     delFollow: PropTypes.func,
     addFollow: PropTypes.func,
@@ -62,7 +62,7 @@ class ProjectCard extends Component {
 
     await this.props.copyProjectMsg(newData);
     message.success('项目复制成功');
-    this.props.callbackResult();
+    this.props.refreshProjectList();
   };
 
   // 复制项目的二次确认
@@ -76,9 +76,7 @@ class ProjectCard extends Component {
       content: (
         <div style={{ marginTop: '10px', fontSize: '13px', lineHeight: '25px' }}>
           <Alert
-            message={`该操作将会复制 ${
-              that.props.projectData.name
-            } 下的所有接口集合，但不包括测试集合中的接口`}
+            message={`该操作将会复制 ${that.props.projectData.name} 下的所有接口集合，但不包括测试集合中的接口`}
             type="info"
           />
           <div style={{ marginTop: '16px' }}>
@@ -106,7 +104,7 @@ class ProjectCard extends Component {
     const id = this.props.projectData.projectid || this.props.projectData._id;
     this.props.delFollow(id).then(res => {
       if (res.payload.data.errcode === 0) {
-        this.props.callbackResult();
+        this.props.refreshProjectList();
         // message.success('已取消关注！');  // 星号已做出反馈 无需重复提醒用户
       }
     });
@@ -123,7 +121,7 @@ class ProjectCard extends Component {
     };
     this.props.addFollow(param).then(res => {
       if (res.payload.data.errcode === 0) {
-        this.props.callbackResult();
+        this.props.refreshProjectList();
         // message.success('已添加关注！');  // 星号已做出反馈 无需重复提醒用户
       }
     });
@@ -136,28 +134,19 @@ class ProjectCard extends Component {
         <Card
           bordered={false}
           className="m-card"
-          onClick={() =>
-            this.props.history.push('/project/' + (projectData.projectid || projectData._id))
-          }
+          onClick={() => this.props.history.push('/project/' + (projectData.projectid || projectData._id))}
         >
           <Icon
             type={projectData.icon || 'star-o'}
             className="ui-logo"
             style={{
-              backgroundColor:
-                constants.PROJECT_COLOR[projectData.color] || constants.PROJECT_COLOR.blue
+              backgroundColor: constants.PROJECT_COLOR[projectData.color] || constants.PROJECT_COLOR.blue
             }}
           />
           <h4 className="ui-title">{projectData.name || projectData.projectname}</h4>
         </Card>
-        <div
-          className="card-btns"
-          onClick={projectData.follow || inFollowPage ? this.del : this.add}
-        >
-          <Tooltip
-            placement="rightTop"
-            title={projectData.follow || inFollowPage ? '取消关注' : '添加关注'}
-          >
+        <div className="card-btns" onClick={projectData.follow || inFollowPage ? this.del : this.add}>
+          <Tooltip placement="rightTop" title={projectData.follow || inFollowPage ? '取消关注' : '添加关注'}>
             <Icon
               type={projectData.follow || inFollowPage ? 'star' : 'star-o'}
               className={'icon ' + (projectData.follow || inFollowPage ? 'active' : '')}
