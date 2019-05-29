@@ -9,7 +9,7 @@ class groupModel extends baseModel {
 
   getSchema() {
     return {
-      uid: Number,
+      // uid: Number,
       group_id: Number,
       project_id: Number,
       add_time: Number,
@@ -25,6 +25,7 @@ class groupModel extends baseModel {
   }
 
   save(data) {
+    data.up_time = data.add_time = yapi.commons.time();
     return new this.model(data).save();
   }
 
@@ -44,17 +45,35 @@ class groupModel extends baseModel {
     });
   }
 
-  getTypeListCount(type, group_id, project_id) {
-    return this.model.countDocuments({ type, group_id, project_id });
+  getTypeListCount(/* type, group_id, project_id */) {
+    return this.model.countDocuments(this.getQueryObj.apply(null, arguments));
   }
 
-  list(type, group_id, project_id) {
+  getQueryObj(type, group_id, project_id) {
+    let queryObj = {
+      group_id,
+      project_id
+    };
+
+    if (type) {
+      queryObj.type = type;
+    }
+
+    return queryObj;
+  }
+
+  list(/* type, group_id, project_id */) {
+    return this.model.find(this.getQueryObj.apply(null, arguments)).exec();
+  }
+
+  listWithPaging(type, group_id, project_id, page, limit) {
+    page = parseInt(page, 10);
+    limit = parseInt(limit, 10);
     return this.model
-      .find({
-        type,
-        group_id,
-        project_id
-      })
+      .find(this.getQueryObj(type, group_id, project_id))
+      .sort({ _id: -1 })
+      .skip((page - 1) * limit)
+      .limit(limit)
       .exec();
   }
 
@@ -65,6 +84,7 @@ class groupModel extends baseModel {
   }
 
   up(id, data) {
+    data.up_time = yapi.commons.time();
     return this.model.update(
       {
         _id: id

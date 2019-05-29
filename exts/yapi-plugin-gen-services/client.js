@@ -4,7 +4,7 @@ function genServices(routers) {
   routers['services'] = {
     name: '生成 ts services',
     component: Services
-  }
+  };
 }
 
 module.exports = function() {

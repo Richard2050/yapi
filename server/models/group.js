@@ -22,19 +22,10 @@ class groupModel extends baseModel {
           email: String
         }
       ],
-
       custom_field1: {
         name: String,
         enable: { type: Boolean, default: false }
       }
-      // custom_field2: {
-      //   name: String,
-      //   enable: { type: Boolean, default: false }
-      // },
-      // custom_field3: {
-      //   name: String,
-      //   enable: { type: Boolean, default: false }
-      // }
     };
   }
 

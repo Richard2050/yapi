@@ -5,6 +5,16 @@ module.exports = [
     method: 'get'
   },
   {
+    action: 'listWithPaging',
+    path: 'listWithPaging',
+    method: 'get'
+  },
+  {
+    action: 'save',
+    path: 'save',
+    method: 'post'
+  },
+  {
     action: 'add',
     path: 'add',
     method: 'post'
