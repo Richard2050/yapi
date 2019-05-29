@@ -273,7 +273,7 @@ class MemberList extends Component {
     }
     userinfo = [...ownerinfo, ...devinfo, ...guestinfo];
     return (
-      <div className="m-panel">
+      <div className="memberlist m-panel">
         {this.state.visible ? (
           <Modal title="添加成员" visible={this.state.visible} onOk={this.handleOk} onCancel={this.handleCancel}>
             <Row gutter={6} className="modal-input">

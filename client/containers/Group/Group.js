@@ -1,6 +1,7 @@
 import React, { PureComponent as Component } from 'react';
 import GroupList from './GroupList/GroupList.js';
 import ProjectList from './ProjectList/ProjectList.js';
+import TypeList from './TypeList/TypeList.js';
 import MemberList from './MemberList/MemberList.js';
 import GroupLog from './GroupLog/GroupLog.js';
 import GroupSetting from './GroupSetting/GroupSetting.js';
@@ -65,7 +66,10 @@ export default class Group extends Component {
   //   // }
   // }
   render() {
-    if (this.state.groupId === -1) return <Spin />;
+    if (this.state.groupId === -1) {
+      return <Spin />;
+    }
+
     const GroupContent = (
       <Layout style={{ minHeight: 'calc(100vh - 100px)', marginLeft: '24px', marginTop: '24px' }}>
         <Sider style={{ height: '100%' }} width={300}>
@@ -81,9 +85,12 @@ export default class Group extends Component {
               backgroundColor: '#fff'
             }}
           >
-            <Tabs type="card" className="m-tab tabs-large" style={{ height: '100%' }}>
+            <Tabs type="card" className="m-tab tabs-large" style={{ height: '100%' }} defaultActiveKey="5">
               <TabPane tab="项目列表" key="1">
                 <ProjectList />
+              </TabPane>
+              <TabPane tab="自定义类型列表" key="5">
+                <TypeList />
               </TabPane>
               {this.props.currGroup.type === 'public' ? (
                 <TabPane tab="成员列表" key="2">

@@ -25,10 +25,13 @@ const InterfaceRoute = props => {
   let C;
   if (props.match.params.action === 'api') {
     if (!props.match.params.actionId) {
+      // =====>  /project/5/interface/api
       C = InterfaceList;
     } else if (!isNaN(props.match.params.actionId)) {
+      // =====>  /project/5/interface/api/9
       C = InterfaceContent;
     } else if (props.match.params.actionId.indexOf('cat_') === 0) {
+      // =====>  /project/5/interface/api/cat_9
       C = InterfaceList;
     }
   } else if (props.match.params.action === 'col') {

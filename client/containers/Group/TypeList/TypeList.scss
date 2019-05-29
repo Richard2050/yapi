@@ -1,11 +1,20 @@
 @import '../../../styles/mixin.scss';
 
-.memberlist.m-panel {
+.typelist.m-panel {
     background-color: #fff;
     padding: 24px;
-    min-height: 4.68rem;
     margin-top: 0;
+    position: relative;
     // box-shadow: $box-shadow-panel;
+
+    .m-panel {
+        background-color: #fff;
+        padding: 24px 10px;
+        margin-top: 0;
+        position: relative;
+        min-height: 2rem;
+        // box-shadow: $box-shadow-panel;
+    }
 
     .m-tab {
         overflow: inherit !important;
@@ -13,6 +22,10 @@
 
     .btn-container {
         text-align: right;
+        position: absolute;
+        z-index: 100;
+        right: 10px;
+        top: -12px;
     }
 
     .modal-input {
@@ -22,6 +35,10 @@
 
         .label {
             text-align: right;
+        }
+
+        .typenamelabel {
+            text-align: left;
         }
 
         .select {
@@ -52,15 +69,19 @@
             height: .32rem;
             border-radius: .04rem;
         }
-
-        .m-user-name {
-            margin-left: 8px;
-        }
-
     }
 
-    .usernamelabel,
     .usernameauth {
         line-height: 36px;
+    }
+
+    th {
+        font-size: 16px;
+        font-weight: bold;
+    }
+
+    .typepanel-column,
+    .member-opration {
+        padding: 16px 20px;
     }
 }

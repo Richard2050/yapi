@@ -47,8 +47,7 @@ class ErrMsg extends Component {
           title = '你还没有关注项目呢';
           desc = (
             <span>
-              先去 <a onClick={() => this.props.history.push('/group')}>“项目广场”</a> 逛逛吧,
-              那里可以添加关注。
+              先去 <a onClick={() => this.props.history.push('/group')}>“项目广场”</a> 逛逛吧, 那里可以添加关注。
             </span>
           );
           break;
@@ -73,6 +72,11 @@ class ErrMsg extends Component {
         case 'noChange':
           title = '没有改动';
           desc = '该操作未改动 Api 数据';
+          icon = 'meh-o';
+          break;
+        case 'noType':
+          title = '还没有自定义的类型';
+          desc = '点击右上方的的 “添加类型” 添加';
           icon = 'meh-o';
           break;
         default:

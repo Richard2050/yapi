@@ -391,6 +391,7 @@ class InterfaceEditForm extends Component {
         });
         return this.mockPreview.setValue(JSON.stringify(result.data));
       }
+
       if (this.resBodyEditor.editor.curData.format === true) {
         str = JSON.stringify(this.resBodyEditor.editor.curData.mockData(), null, '  ');
       } else {
