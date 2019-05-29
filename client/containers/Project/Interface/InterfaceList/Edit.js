@@ -99,11 +99,7 @@ class InterfaceEdit extends Component {
 
     try {
       s = new WebSocket(
-        wsProtocol +
-          '://' +
-          domain +
-          '/api/interface/solve_conflict?id=' +
-          this.props.match.params.actionId
+        wsProtocol + '://' + domain + '/api/interface/solve_conflict?id=' + this.props.match.params.actionId
       );
       s.onopen = () => {
         this.WebSocket = s;

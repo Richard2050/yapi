@@ -13,7 +13,7 @@ const logModel = require('../models/log.js');
 const followModel = require('../models/follow.js');
 const tokenModel = require('../models/token.js');
 const url = require('url');
-const {getToken} = require('../utils/token')
+const { getToken } = require('../utils/token');
 const sha = require('sha.js');
 
 class projectController extends baseController {
@@ -93,8 +93,8 @@ class projectController extends baseController {
         '*id': id
       },
       get: {
-        'id': id,
-        'project_id': id
+        id: id,
+        project_id: id
       },
       list: {
         '*group_id': group_id
@@ -251,9 +251,9 @@ class projectController extends baseController {
     }
     let username = this.getUsername();
     yapi.commons.saveLog({
-      content: `<a href="/user/profile/${this.getUid()}">${username}</a> 添加了项目 <a href="/project/${
-        result._id
-      }">${params.name}</a>`,
+      content: `<a href="/user/profile/${this.getUid()}">${username}</a> 添加了项目 <a href="/project/${result._id}">${
+        params.name
+      }</a>`,
       type: 'project',
       uid,
       username: username,
@@ -518,7 +518,7 @@ class projectController extends baseController {
 
   async get(ctx) {
     let params = ctx.params;
-    let projectId= params.id || params.project_id; // 通过 token 访问
+    let projectId = params.id || params.project_id; // 通过 token 访问
     let result = await this.Model.getBaseInfo(projectId);
 
     if (!result) {
@@ -562,6 +562,7 @@ class projectController extends baseController {
     if (groupData.type === 'private' && this.getUid() === groupData.uid) {
       isPrivateGroup = true;
     }
+
     let auth = await this.checkAuth(group_id, 'group', 'view');
     let result = await this.Model.list(group_id);
     let follow = await this.followModel.list(this.getUid());
@@ -702,11 +703,7 @@ class projectController extends baseController {
         return (ctx.body = yapi.commons.resReturn(null, 400, '项目成员不存在'));
       }
 
-      let result = await projectInst.changeMemberEmailNotice(
-        params.id,
-        params.member_uid,
-        params.notice
-      );
+      let result = await projectInst.changeMemberEmailNotice(params.id, params.member_uid, params.notice);
       ctx.body = yapi.commons.resReturn(result);
     } catch (e) {
       ctx.body = yapi.commons.resReturn(null, 402, e.message);
@@ -1012,7 +1009,7 @@ class projectController extends baseController {
         token = data.token;
       }
 
-      token = getToken(token, this.getUid())
+      token = getToken(token, this.getUid());
 
       ctx.body = yapi.commons.resReturn(token);
     } catch (err) {

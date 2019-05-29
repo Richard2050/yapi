@@ -1,4 +1,4 @@
-const yapi = require('../yapi')
+const yapi = require('../yapi');
 
 const crypto = require('crypto');
 
@@ -8,7 +8,6 @@ const crypto = require('crypto');
 
 // 创建加密算法
 const aseEncode = function(data, password) {
-
   // 如下方法使用指定的算法与密码来创建cipher对象
   const cipher = crypto.createCipher('aes192', password);
 
@@ -37,31 +36,33 @@ const aseDecode = function(data, password) {
 
   decrypted += decipher.final('utf-8');
   return decrypted;
-}; 
+};
 
 const defaultSalt = 'abcde';
 
-exports.getToken = function getToken(token, uid){
-  if(!token)throw new Error('token 不能为空')
+exports.getToken = function getToken(token, uid) {
+  if (!token) throw new Error('token 不能为空');
   yapi.WEBCONFIG.passsalt = yapi.WEBCONFIG.passsalt || defaultSalt;
-  return aseEncode(uid + '|' + token, yapi.WEBCONFIG.passsalt)
-}
+  return aseEncode(uid + '|' + token, yapi.WEBCONFIG.passsalt);
+};
 
-exports.parseToken = function parseToken(token){
-  if(!token)throw new Error('token 不能为空')
+exports.parseToken = function parseToken(token) {
+  if (!token) {
+    throw new Error('token 不能为空');
+  }
+
   yapi.WEBCONFIG.passsalt = yapi.WEBCONFIG.passsalt || defaultSalt;
   let tokens;
-  try{
-    tokens = aseDecode(token, yapi.WEBCONFIG.passsalt)
-  }catch(e){}  
-  if(tokens && typeof tokens === 'string' && tokens.indexOf('|') > 0){
-    tokens = tokens.split('|')
+  try {
+    tokens = aseDecode(token, yapi.WEBCONFIG.passsalt);
+  } catch (e) {}
+
+  if (tokens && typeof tokens === 'string' && tokens.indexOf('|') > 0) {
+    tokens = tokens.split('|');
     return {
       uid: tokens[0],
       projectToken: tokens[1]
-    }
+    };
   }
   return false;
-  
-}
-
+};

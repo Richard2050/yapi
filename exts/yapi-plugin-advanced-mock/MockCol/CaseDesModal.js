@@ -1,19 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import {
-  Form,
-  Select,
-  InputNumber,
-  Switch,
-  Col,
-  message,
-  Row,
-  Input,
-  Button,
-  Icon,
-  AutoComplete,
-  Modal
-} from 'antd';
+import { Form, Select, InputNumber, Switch, Col, message, Row, Input, Button, Icon, AutoComplete, Modal } from 'antd';
 const Option = Select.Option;
 const FormItem = Form.Item;
 import { safeAssign } from 'client/common.js';
@@ -81,8 +68,7 @@ class CaseDesForm extends Component {
             return typeof item.value !== 'object';
           })
       : [{ name: '', value: '' }];
-    const headers =
-      caseData.headers && caseData.headers.length ? caseData.headers : [{ name: '', value: '' }];
+    const headers = caseData.headers && caseData.headers.length ? caseData.headers : [{ name: '', value: '' }];
     caseData.code = '' + caseData.code;
     caseData.params = JSON.stringify(caseData.params, null, 2);
 
@@ -153,11 +139,7 @@ class CaseDesForm extends Component {
         req_body_form.forEach(item => {
           keys.push(item.name);
         });
-    } else if (
-      constants.HTTP_METHOD[method.toUpperCase()].request_body &&
-      req_body_type === 'json' &&
-      req_body_other
-    ) {
+    } else if (constants.HTTP_METHOD[method.toUpperCase()].request_body && req_body_type === 'json' && req_body_other) {
       let bodyObj;
       try {
         // 针对json-schema的处理
@@ -227,18 +209,7 @@ class CaseDesForm extends Component {
   render() {
     const { getFieldDecorator, getFieldValue } = this.props.form;
     const { isAdd, visible, onCancel } = this.props;
-    const {
-      name,
-      code,
-      headers,
-      ip,
-      ip_enable,
-      params,
-      paramsArr,
-      paramsForm,
-      res_body,
-      delay
-    } = this.state;
+    const { name, code, headers, ip, ip_enable, params, paramsArr, paramsForm, res_body, delay } = this.state;
 
     this.props.form.initialValue;
     const valuesTpl = (values, title) => {
@@ -397,16 +368,8 @@ class CaseDesForm extends Component {
             </Col>
           </Row>
           {valuesTpl(paramsArr, '参数过滤')}
-          <FormItem
-            wrapperCol={{ span: 6, offset: 5 }}
-            style={{ display: paramsForm === 'form' ? '' : 'none' }}
-          >
-            <Button
-              size="default"
-              type="primary"
-              onClick={() => this.addValues('paramsArr')}
-              style={{ width: '100%' }}
-            >
+          <FormItem wrapperCol={{ span: 6, offset: 5 }} style={{ display: paramsForm === 'form' ? '' : 'none' }}>
+            <Button size="default" type="primary" onClick={() => this.addValues('paramsArr')} style={{ width: '100%' }}>
               <Icon type="plus" /> 添加参数
             </Button>
           </FormItem>
@@ -422,9 +385,7 @@ class CaseDesForm extends Component {
                 'params',
                 paramsForm === 'json'
                   ? {
-                      rules: [
-                        { validator: this.jsonValidator, message: '请输入正确的 JSON 字符串！' }
-                      ]
+                      rules: [{ validator: this.jsonValidator, message: '请输入正确的 JSON 字符串！' }]
                     }
                   : {}
               )(<Input style={{ display: 'none' }} />)}
@@ -453,12 +414,7 @@ class CaseDesForm extends Component {
           </FormItem>
           {headersTpl(headers, 'HTTP 头')}
           <FormItem wrapperCol={{ span: 6, offset: 5 }}>
-            <Button
-              size="default"
-              type="primary"
-              onClick={() => this.addValues('headers')}
-              style={{ width: '100%' }}
-            >
+            <Button size="default" type="primary" onClick={() => this.addValues('headers')} style={{ width: '100%' }}>
               <Icon type="plus" /> 添加 HTTP 头
             </Button>
           </FormItem>

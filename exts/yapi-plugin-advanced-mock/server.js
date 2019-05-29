@@ -155,6 +155,7 @@ module.exports = function() {
       action: 'hideCase'
     });
   });
+
   this.bindHook('interface_del', async function(id) {
     let inst = yapi.getInst(advModel);
     await inst.delByInterfaceId(id);

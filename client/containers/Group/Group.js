@@ -11,11 +11,9 @@ import { Tabs, Layout, Spin } from 'antd';
 const { Content, Sider } = Layout;
 const TabPane = Tabs.TabPane;
 import { fetchNewsData } from '../../reducer/modules/news.js';
-import {
-  setCurrGroup
-} from '../../reducer/modules/group';
+import { setCurrGroup } from '../../reducer/modules/group';
 import './Group.scss';
-import axios from 'axios'
+import axios from 'axios';
 
 @connect(
   state => {
@@ -37,19 +35,19 @@ export default class Group extends Component {
 
     this.state = {
       groupId: -1
-    }
+    };
   }
 
-  async componentDidMount(){
-    let r = await axios.get('/api/group/get_mygroup')
-    try{
+  async componentDidMount() {
+    let r = await axios.get('/api/group/get_mygroup');
+    try {
       let group = r.data.data;
       this.setState({
         groupId: group._id
-      })
-      this.props.setCurrGroup(group)
-    }catch(e){
-      console.error(e)
+      });
+      this.props.setCurrGroup(group);
+    } catch (e) {
+      console.error(e);
     }
   }
 
@@ -67,7 +65,7 @@ export default class Group extends Component {
   //   // }
   // }
   render() {
-    if(this.state.groupId === -1)return <Spin />
+    if (this.state.groupId === -1) return <Spin />;
     const GroupContent = (
       <Layout style={{ minHeight: 'calc(100vh - 100px)', marginLeft: '24px', marginTop: '24px' }}>
         <Sider style={{ height: '100%' }} width={300}>
@@ -114,7 +112,7 @@ export default class Group extends Component {
     return (
       <div className="projectGround">
         <Switch>
-          <Redirect exact from="/group" to={"/group/" + this.state.groupId} />
+          <Redirect exact from="/group" to={'/group/' + this.state.groupId} />
           <Route path="/group/:groupId" render={() => GroupContent} />
         </Switch>
       </div>

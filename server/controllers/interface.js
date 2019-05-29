@@ -19,10 +19,9 @@ const path = require('path');
 // const annotatedCss = require("jsondiffpatch/public/formatters-styles/annotated.css");
 // const htmlCss = require("jsondiffpatch/public/formatters-styles/html.css");
 
-
-function handleHeaders(values){
+function handleHeaders(values) {
   let isfile = false,
-  isHavaContentType = false;
+    isHavaContentType = false;
   if (values.req_body_type === 'form') {
     values.req_body_form.forEach(item => {
       if (item.type === 'file') {
@@ -60,7 +59,6 @@ function handleHeaders(values){
     }
   }
 }
-
 
 class interfaceController extends baseController {
   constructor(ctx) {
@@ -219,14 +217,10 @@ class interfaceController extends baseController {
     let http_path = url.parse(params.path, true);
 
     if (!yapi.commons.verifyPath(http_path.pathname)) {
-      return (ctx.body = yapi.commons.resReturn(
-        null,
-        400,
-        'path第一位必需为 /, 只允许由 字母数字-/_:.! 组成'
-      ));
+      return (ctx.body = yapi.commons.resReturn(null, 400, 'path第一位必需为 /, 只允许由 字母数字-/_:.! 组成'));
     }
 
-    handleHeaders(params)
+    handleHeaders(params);
 
     params.query_path = {};
     params.query_path.path = http_path.pathname;
@@ -329,7 +323,7 @@ class interfaceController extends baseController {
 
   async save(ctx) {
     let params = ctx.params;
-    
+
     if (!this.$tokenAuth) {
       let auth = await this.checkAuth(params.project_id, 'project', 'edit');
       if (!auth) {
@@ -342,11 +336,7 @@ class interfaceController extends baseController {
     let http_path = url.parse(params.path, true);
 
     if (!yapi.commons.verifyPath(http_path.pathname)) {
-      return (ctx.body = yapi.commons.resReturn(
-        null,
-        400,
-        'path第一位必需为 /, 只允许由 字母数字-/_:.! 组成'
-      ));
+      return (ctx.body = yapi.commons.resReturn(null, 400, 'path第一位必需为 /, 只允许由 字母数字-/_:.! 组成'));
     }
 
     let result = await this.Model.getByPath(params.project_id, params.path, params.method, '_id res_body');
@@ -355,18 +345,18 @@ class interfaceController extends baseController {
       result.forEach(async item => {
         params.id = item._id;
         // console.log(this.schemaMap['up'])
-        let validParams = Object.assign({}, params)
+        let validParams = Object.assign({}, params);
         let validResult = yapi.commons.validateParams(this.schemaMap['up'], validParams);
         if (validResult.valid) {
           let data = {};
           data.params = validParams;
 
-          if(params.res_body_is_json_schema && params.dataSync === 'good'){
-            try{
-              let new_res_body = yapi.commons.json_parse(params.res_body)
-              let old_res_body = yapi.commons.json_parse(item.res_body)
-              data.params.res_body = JSON.stringify(mergeJsonSchema(old_res_body, new_res_body),null,2);
-            }catch(err){}
+          if (params.res_body_is_json_schema && params.dataSync === 'good') {
+            try {
+              let new_res_body = yapi.commons.json_parse(params.res_body);
+              let old_res_body = yapi.commons.json_parse(item.res_body);
+              data.params.res_body = JSON.stringify(mergeJsonSchema(old_res_body, new_res_body), null, 2);
+            } catch (err) {}
           }
           await this.up(data);
         } else {
@@ -405,9 +395,9 @@ class interfaceController extends baseController {
 
     try {
       let result = await this.Model.get(params.id);
-      if(this.$tokenAuth){
-        if(params.project_id !== result.project_id){
-          ctx.body = yapi.commons.resReturn(null, 400, 'token有误')
+      if (this.$tokenAuth) {
+        if (params.project_id !== result.project_id) {
+          ctx.body = yapi.commons.resReturn(null, 400, 'token有误');
           return;
         }
       }
@@ -485,9 +475,7 @@ class interfaceController extends baseController {
 
   async downloadCrx(ctx) {
     let filename = 'crossRequest.zip';
-    let dataBuffer = yapi.fs.readFileSync(
-      yapi.path.join(yapi.WEBROOT, 'static/attachment/cross-request.zip')
-    );
+    let dataBuffer = yapi.fs.readFileSync(yapi.path.join(yapi.WEBROOT, 'static/attachment/cross-request.zip'));
     ctx.set('Content-disposition', 'attachment; filename=' + filename);
     ctx.set('Content-Type', 'application/zip');
     ctx.body = dataBuffer;
@@ -601,7 +589,7 @@ class interfaceController extends baseController {
     // params.res_body_is_json_schema = _.isUndefined (params.res_body_is_json_schema) ? true : params.res_body_is_json_schema;
     // params.req_body_is_json_schema = _.isUndefined(params.req_body_is_json_schema) ?  true : params.req_body_is_json_schema;
 
-    handleHeaders(params)
+    handleHeaders(params);
 
     let interfaceData = await this.Model.get(id);
     if (!interfaceData) {
@@ -620,17 +608,13 @@ class interfaceController extends baseController {
       },
       params
     );
-    
+
     if (params.path) {
       let http_path;
       http_path = url.parse(params.path, true);
 
       if (!yapi.commons.verifyPath(http_path.pathname)) {
-        return (ctx.body = yapi.commons.resReturn(
-          null,
-          400,
-          'path第一位必需为 /, 只允许由 字母数字-/_:.! 组成'
-        ));
+        return (ctx.body = yapi.commons.resReturn(null, 400, 'path第一位必需为 /, 只允许由 字母数字-/_:.! 组成'));
       }
       params.query_path = {};
       params.query_path.path = http_path.pathname;
@@ -644,15 +628,8 @@ class interfaceController extends baseController {
       data.query_path = params.query_path;
     }
 
-    if (
-      params.path &&
-      (params.path !== interfaceData.path || params.method !== interfaceData.method)
-    ) {
-      let checkRepeat = await this.Model.checkRepeat(
-        interfaceData.project_id,
-        params.path,
-        params.method
-      );
+    if (params.path && (params.path !== interfaceData.path || params.method !== interfaceData.method)) {
+      let checkRepeat = await this.Model.checkRepeat(interfaceData.project_id, params.path, params.method);
       if (checkRepeat > 0) {
         return (ctx.body = yapi.commons.resReturn(
           null,
@@ -683,16 +660,14 @@ class interfaceController extends baseController {
     this.catModel.get(interfaceData.catid).then(cate => {
       let diffView2 = showDiffMsg(jsondiffpatch, formattersHtml, logData);
       if (diffView2.length <= 0) {
-          return; // 没有变化时，不写日志
+        return; // 没有变化时，不写日志
       }
       yapi.commons.saveLog({
         content: `<a href="/user/profile/${this.getUid()}">${username}</a> 
-                    更新了分类 <a href="/project/${cate.project_id}/interface/api/cat_${
-          data.catid
-        }">${cate.name}</a> 
-                    下的接口 <a href="/project/${cate.project_id}/interface/api/${id}">${
-          interfaceData.title
-        }</a><p>${params.message}</p>`,
+                    更新了分类 <a href="/project/${cate.project_id}/interface/api/cat_${data.catid}">${cate.name}</a> 
+                    下的接口 <a href="/project/${cate.project_id}/interface/api/${id}">${interfaceData.title}</a><p>${
+          params.message
+        }</p>`,
         type: 'project',
         uid: this.getUid(),
         username: username,
@@ -705,10 +680,7 @@ class interfaceController extends baseController {
     if (params.switch_notice === true) {
       let diffView = showDiffMsg(jsondiffpatch, formattersHtml, logData);
       let annotatedCss = fs.readFileSync(
-        path.resolve(
-          yapi.WEBROOT,
-          'node_modules/jsondiffpatch/dist/formatters-styles/annotated.css'
-        ),
+        path.resolve(yapi.WEBROOT, 'node_modules/jsondiffpatch/dist/formatters-styles/annotated.css'),
         'utf8'
       );
       let htmlCss = fs.readFileSync(
@@ -717,10 +689,8 @@ class interfaceController extends baseController {
       );
 
       let project = await this.projectModel.getBaseInfo(interfaceData.project_id);
-    
-      let interfaceUrl = `${ctx.request.origin}/project/${
-        interfaceData.project_id
-      }/interface/api/${id}`;
+
+      let interfaceUrl = `${ctx.request.origin}/project/${interfaceData.project_id}/interface/api/${id}`;
 
       yapi.commons.sendNotice(interfaceData.project_id, {
         title: `${username} 更新了接口`,

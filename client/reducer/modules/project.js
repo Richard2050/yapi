@@ -1,6 +1,6 @@
 import axios from 'axios';
 import variable from '../../constants/variable';
-import {htmlFilter} from '../../common';
+import { htmlFilter } from '../../common';
 
 // Actions
 const FETCH_PROJECT_LIST = 'yapi/project/FETCH_PROJECT_LIST';
@@ -21,7 +21,7 @@ const CHECK_PROJECT_NAME = 'yapi/project/CHECK_PROJECT_NAME';
 const COPY_PROJECT_MSG = 'yapi/project/COPY_PROJECT_MSG';
 const PROJECT_GET_ENV = 'yapi/project/PROJECT_GET_ENV';
 const CHANGE_MEMBER_EMAIL_NOTICE = 'yapi/project/CHANGE_MEMBER_EMAIL_NOTICE';
-const GET_SWAGGER_URL_DATA = 'yapi/project/GET_SWAGGER_URL_DATA'
+const GET_SWAGGER_URL_DATA = 'yapi/project/GET_SWAGGER_URL_DATA';
 // Reducer
 const initialState = {
   isUpdateModalShow: false,
@@ -104,7 +104,7 @@ export default (state = initialState, action) => {
       return {
         ...state,
         swaggerUrlData: action.payload.data.data
-      }
+      };
     }
     default:
       return state;
@@ -182,18 +182,7 @@ export function getProjectMemberList(id) {
 // }
 
 export function addProject(data) {
-  let {
-    name,
-    prd_host,
-    basepath,
-    desc,
-    group_id,
-    group_name,
-    protocol,
-    icon,
-    color,
-    project_type
-  } = data;
+  let { name, prd_host, basepath, desc, group_id, group_name, protocol, icon, color, project_type } = data;
 
   // 过滤项目名称中有html标签存在的情况
   name = htmlFilter(name);
@@ -218,7 +207,7 @@ export function addProject(data) {
 // 修改项目
 export function updateProject(data) {
   let { name, project_type, basepath, desc, _id, env, group_id, switch_notice, strice, is_json5, tag } = data;
-  
+
   // 过滤项目名称中有html标签存在的情况
   name = htmlFilter(name);
   const param = {
@@ -332,6 +321,6 @@ export async function checkProjectName(name, group_id) {
 export async function handleSwaggerUrlData(url) {
   return {
     type: GET_SWAGGER_URL_DATA,
-    payload: axios.get('/api/project/swagger_url?url='+url)
+    payload: axios.get('/api/project/swagger_url?url=' + url)
   };
 }

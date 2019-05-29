@@ -188,8 +188,7 @@ class MemberList extends Component {
   render() {
     const columns = [
       {
-        title:
-          this.props.currGroup.group_name + ' 分组成员 (' + this.state.userInfo.length + ') 人',
+        title: this.props.currGroup.group_name + ' 分组成员 (' + this.state.userInfo.length + ') 人',
         dataIndex: 'username',
         key: 'username',
         render: (text, record) => {
@@ -197,9 +196,7 @@ class MemberList extends Component {
             <div className="m-user">
               <Link to={`/user/profile/${record.uid}`}>
                 <img
-                  src={
-                    location.protocol + '//' + location.host + '/api/user/avatar?uid=' + record.uid
-                  }
+                  src={location.protocol + '//' + location.host + '/api/user/avatar?uid=' + record.uid}
                   className="m-user-img"
                 />
               </Link>
@@ -227,11 +224,7 @@ class MemberList extends Component {
           if (this.state.role === 'owner' || this.state.role === 'admin') {
             return (
               <div>
-                <Select
-                  value={record.role + '-' + record.uid}
-                  className="select"
-                  onChange={this.changeUserRole}
-                >
+                <Select value={record.role + '-' + record.uid} className="select" onChange={this.changeUserRole}>
                   <Option value={'owner-' + record.uid}>组长</Option>
                   <Option value={'dev-' + record.uid}>开发者</Option>
                   <Option value={'guest-' + record.uid}>访客</Option>
@@ -282,12 +275,7 @@ class MemberList extends Component {
     return (
       <div className="m-panel">
         {this.state.visible ? (
-          <Modal
-            title="添加成员"
-            visible={this.state.visible}
-            onOk={this.handleOk}
-            onCancel={this.handleCancel}
-          >
+          <Modal title="添加成员" visible={this.state.visible} onOk={this.handleOk} onCancel={this.handleCancel}>
             <Row gutter={6} className="modal-input">
               <Col span="5">
                 <div className="label usernamelabel">用户名: </div>
