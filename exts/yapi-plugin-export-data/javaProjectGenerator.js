@@ -45,7 +45,9 @@ const createJavaProject = async (ctx, controller, pid, curProject, list) => {
     interfaceList: list
   });
 
-  const outputFilePath = path.join(__dirname + `/../../static/${controller.$uid}-${pid}-${curProject.name}`);
+  const outputFilePath = path.join(
+    __dirname + `/../../static/autoCreated/${controller.$uid}-${pid}-${curProject.name}`
+  );
   parseCode(ctx.body, outputFilePath);
   return compressFiles(outputFilePath);
 };
