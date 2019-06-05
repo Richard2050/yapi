@@ -1,18 +1,5 @@
 import React, { PureComponent as Component } from 'react';
-import {
-  Table,
-  Card,
-  Badge,
-  Select,
-  Button,
-  Modal,
-  Row,
-  Col,
-  message,
-  Popconfirm,
-  Switch,
-  Tooltip
-} from 'antd';
+import { Table, Card, Badge, Select, Button, Modal, Row, Col, message, Popconfirm, Switch, Tooltip } from 'antd';
 import PropTypes from 'prop-types';
 import { fetchGroupMsg } from '../../../../reducer/modules/group';
 import { connect } from 'react-redux';
@@ -109,7 +96,7 @@ class ProjectMember extends Component {
 
   // 重新获取列表
 
-  reFetchList = () => {
+  refetchList = () => {
     this.props.getProjectMemberList(this.props.match.params.id).then(res => {
       this.setState({
         projectMemberList: arrayAddKey(res.payload.data.data),
@@ -141,7 +128,7 @@ class ProjectMember extends Component {
             inputUids: []
           });
           message.success(`添加成功! 已成功添加 ${addLength} 人，其中 ${existLength} 人已存在`);
-          this.reFetchList(); // 添加成功后重新获取分组成员列表
+          this.refetchList(); // 添加成功后重新获取分组成员列表
         }
       });
   };
@@ -159,7 +146,7 @@ class ProjectMember extends Component {
       this.props.delMember({ id, member_uid }).then(res => {
         if (!res.payload.data.errcode) {
           message.success(res.payload.data.errmsg);
-          this.reFetchList(); // 添加成功后重新获取分组成员列表
+          this.refetchList(); // 添加成功后重新获取分组成员列表
         }
       });
     };
@@ -173,7 +160,7 @@ class ProjectMember extends Component {
     this.props.changeMemberRole({ id, member_uid, role }).then(res => {
       if (!res.payload.data.errcode) {
         message.success(res.payload.data.errmsg);
-        this.reFetchList(); // 添加成功后重新获取分组成员列表
+        this.refetchList(); // 添加成功后重新获取分组成员列表
       }
     });
   };
@@ -182,7 +169,7 @@ class ProjectMember extends Component {
   changeEmailNotice = async (notice, member_uid) => {
     const id = this.props.match.params.id;
     await this.props.changeMemberEmailNotice({ id, member_uid, notice });
-    this.reFetchList(); // 添加成功后重新获取项目成员列表
+    this.refetchList(); // 添加成功后重新获取项目成员列表
   };
 
   // 关闭模态框
@@ -237,8 +224,7 @@ class ProjectMember extends Component {
     const isEmailChangeEable = this.state.role === 'owner' || this.state.role === 'admin';
     const columns = [
       {
-        title:
-          this.props.projectMsg.name + ' 项目成员 (' + this.state.projectMemberList.length + ') 人',
+        title: this.props.projectMsg.name + ' 项目成员 (' + this.state.projectMemberList.length + ') 人',
         dataIndex: 'username',
         key: 'username',
         render: (text, record) => {
@@ -282,11 +268,7 @@ class ProjectMember extends Component {
           if (this.state.role === 'owner' || this.state.role === 'admin') {
             return (
               <div>
-                <Select
-                  value={record.role + '-' + record.uid}
-                  className="select"
-                  onChange={this.changeUserRole}
-                >
+                <Select value={record.role + '-' + record.uid} className="select" onChange={this.changeUserRole}>
                   <Option value={'owner-' + record.uid}>组长</Option>
                   <Option value={'dev-' + record.uid}>开发者</Option>
                   <Option value={'guest-' + record.uid}>访客</Option>
@@ -328,12 +310,7 @@ class ProjectMember extends Component {
       <div className="g-row">
         <div className="m-panel">
           {this.state.visible ? (
-            <Modal
-              title="添加成员"
-              visible={this.state.visible}
-              onOk={this.handleOk}
-              onCancel={this.handleCancel}
-            >
+            <Modal title="添加成员" visible={this.state.visible} onOk={this.handleOk} onCancel={this.handleCancel}>
               <Row gutter={6} className="modal-input">
                 <Col span="5">
                   <div className="label usernamelabel">用户名: </div>
@@ -391,9 +368,7 @@ class ProjectMember extends Component {
           />
           <Card
             bordered={false}
-            title={
-              this.state.groupName + ' 分组成员 ' + '(' + this.state.groupMemberList.length + ') 人'
-            }
+            title={this.state.groupName + ' 分组成员 ' + '(' + this.state.groupMemberList.length + ') 人'}
             hoverable={true}
             className="setting-group"
           >
@@ -402,13 +377,7 @@ class ProjectMember extends Component {
                 return (
                   <div key={index} className="card-item">
                     <img
-                      src={
-                        location.protocol +
-                        '//' +
-                        location.host +
-                        '/api/user/avatar?uid=' +
-                        item.uid
-                      }
+                      src={location.protocol + '//' + location.host + '/api/user/avatar?uid=' + item.uid}
                       className="item-img"
                     />
                     <p className="item-name">

@@ -53,13 +53,7 @@ export default class CaseEnv extends React.Component {
               <div>
                 {this.props.envList.map(item => {
                   return (
-                    <Row
-                      key={item._id}
-                      type="flex"
-                      justify="space-around"
-                      align="middle"
-                      className="env-item"
-                    >
+                    <Row key={item._id} type="flex" justify="space-around" align="middle" className="env-item">
                       <Col span={6} className="label">
                         <Tooltip title={item.name}>
                           <span className="label-name">{item.name}</span>

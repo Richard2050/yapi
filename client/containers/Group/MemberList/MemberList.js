@@ -71,7 +71,7 @@ class MemberList extends Component {
   };
 
   // 重新获取列表
-  reFetchList = () => {
+  refetchList = () => {
     this.props.fetchGroupMemberList(this.props.currGroup._id).then(res => {
       this.setState({
         userInfo: arrayAddKey(res.payload.data.data),
@@ -99,7 +99,7 @@ class MemberList extends Component {
             inputUids: []
           });
           message.success(`添加成功! 已成功添加 ${addLength} 人，其中 ${existLength} 人已存在`);
-          this.reFetchList(); // 添加成功后重新获取分组成员列表
+          this.refetchList(); // 添加成功后重新获取分组成员列表
         }
       });
   };
@@ -119,7 +119,7 @@ class MemberList extends Component {
       this.props.delMember({ id, member_uid }).then(res => {
         if (!res.payload.data.errcode) {
           message.success(res.payload.data.errmsg);
-          this.reFetchList(); // 添加成功后重新获取分组成员列表
+          this.refetchList(); // 添加成功后重新获取分组成员列表
         }
       });
     };
@@ -133,7 +133,7 @@ class MemberList extends Component {
     this.props.changeMemberRole({ id, member_uid, role }).then(res => {
       if (!res.payload.data.errcode) {
         message.success(res.payload.data.errmsg);
-        this.reFetchList(); // 添加成功后重新获取分组成员列表
+        this.refetchList(); // 添加成功后重新获取分组成员列表
       }
     });
   };
