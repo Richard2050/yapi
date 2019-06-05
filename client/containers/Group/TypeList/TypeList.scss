@@ -58,6 +58,12 @@
             // background-color: transparent;
             border-color: transparent;
         }
+
+        .btn-default {
+            margin-left: .08rem;
+            background-color: #f7f7f7;
+            border-color: transparent;
+        }
     }
 
     .m-user {
@@ -82,6 +88,15 @@
 
     .typepanel-column,
     .member-opration {
-        padding: 16px 20px;
+        padding: 10px 20px;
     }
+
+    .typepanel-column {
+        cursor: pointer;
+    }
+}
+
+.area-split {
+    border: 1px solid rgb(243, 243, 243);
+    margin-top: 10px;
 }

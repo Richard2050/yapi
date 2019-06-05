@@ -14,7 +14,6 @@ const PROJECT_UPSET = 'yapi/project/PROJECT_UPSET';
 const GET_CURR_PROJECT = 'yapi/project/GET_CURR_PROJECT';
 const GET_PEOJECT_MEMBER = 'yapi/project/GET_PEOJECT_MEMBER';
 const ADD_PROJECT_MEMBER = 'yapi/project/ADD_PROJECT_MEMBER';
-const DEL_PROJECT_MEMBER = 'yapi/project/DEL_PROJECT_MEMBER';
 const CHANGE_PROJECT_MEMBER = 'yapi/project/CHANGE_PROJECT_MEMBER';
 const GET_TOKEN = 'yapi/project/GET_TOKEN';
 const UPDATE_TOKEN = 'yapi/project/UPDATE_TOKEN';
@@ -25,6 +24,7 @@ const CHANGE_MEMBER_EMAIL_NOTICE = 'yapi/project/CHANGE_MEMBER_EMAIL_NOTICE';
 const GET_SWAGGER_URL_DATA = 'yapi/project/GET_SWAGGER_URL_DATA';
 
 const SAVE_TYPE = 'yapi/type/SAVE_TYPE';
+const DEL_TYPE = 'yapi/type/DEL_DEL_TYPE';
 // Reducer
 const initialState = {
   isUpdateModalShow: false,
@@ -154,10 +154,10 @@ export function addMember(param) {
 }
 
 // 删除项目成员
-export function delMember(param) {
+export function delType(param) {
   return {
-    type: DEL_PROJECT_MEMBER,
-    payload: axios.post('/api/project/del_member', param)
+    type: DEL_TYPE,
+    payload: axios.post('/api/type/del', param)
   };
 }
 

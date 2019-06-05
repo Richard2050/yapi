@@ -102,7 +102,7 @@ class TypeList extends Component {
             inputUids: []
           });
           message.success(`添加成功! 已成功添加 ${addLength} 人，其中 ${existLength} 人已存在`);
-          this.reFetchList(); // 添加成功后重新获取分组成员列表
+          this.refetchList(); // 添加成功后重新获取分组成员列表
         }
       });
   };
@@ -122,7 +122,7 @@ class TypeList extends Component {
       this.props.delMember({ id, member_uid }).then(res => {
         if (!res.payload.data.errcode) {
           message.success(res.payload.data.errmsg);
-          this.reFetchList(); // 添加成功后重新获取分组成员列表
+          this.refetchList(); // 添加成功后重新获取分组成员列表
         }
       });
     };
@@ -136,7 +136,7 @@ class TypeList extends Component {
     this.props.changeMemberRole({ id, member_uid, role }).then(res => {
       if (!res.payload.data.errcode) {
         message.success(res.payload.data.errmsg);
-        this.reFetchList(); // 添加成功后重新获取分组成员列表
+        this.refetchList(); // 添加成功后重新获取分组成员列表
       }
     });
   };
@@ -155,11 +155,8 @@ class TypeList extends Component {
     }
 
     if (this.props.currGroup._id !== nextProps.currGroup._id) {
-      this.props.fetchTypeList(nextProps.currGroup._id).then(res => {
-        this.setState({
-          typeList: arrayAddKey(res.payload.data.data)
-        });
-      });
+      this.getTypeList(nextProps.currGroup._id);
+
       this.props.fetchGroupMsg(nextProps.currGroup._id).then(res => {
         this.setState({
           role: res.payload.data.data.role
@@ -180,6 +177,10 @@ class TypeList extends Component {
       });
     });
 
+    this.getTypeList(currGroupId);
+  }
+
+  getTypeList(currGroupId) {
     this.props.fetchTypeList(currGroupId).then(res => {
       this.setState({
         typeList: arrayAddKey(res.payload.data.data)
@@ -210,7 +211,7 @@ class TypeList extends Component {
             const _typeList = typeSeparateList[item.value] || [];
             return (
               <Panel header={`${item.name} 共 (${_typeList.length}) 个类型`} key={item.value}>
-                <TypePanel type={item} typeList={_typeList} />
+                <TypePanel type={item} typeList={_typeList} refreshTypeList={this.getTypeList} />
               </Panel>
             );
           })}

@@ -10,9 +10,9 @@ import './TypeList.scss';
 
 import { autobind } from 'core-decorators';
 
-import { fetchGroupMemberList, fetchGroupMsg, delMember, changeMemberRole } from '../../../reducer/modules/group.js';
+import { fetchGroupMemberList, fetchGroupMsg, changeMemberRole } from '../../../reducer/modules/group.js';
 
-import { saveType } from '../../../reducer/modules/type.js';
+import { saveType, delType } from '../../../reducer/modules/type.js';
 
 import ErrMsg from '../../../components/ErrMsg/ErrMsg.js';
 
@@ -39,7 +39,6 @@ function arrayAddKey(arr) {
     return {
       currGroup: state.group.currGroup,
       currProject: {},
-
       uid: state.user.uid,
       role: state.group.role
     };
@@ -49,7 +48,7 @@ function arrayAddKey(arr) {
     fetchGroupMemberList,
     fetchGroupMsg,
     saveType,
-    delMember,
+    delType,
     changeMemberRole
   }
 )
@@ -75,12 +74,12 @@ class TypePanel extends Component {
     type: PropTypes.object,
     currGroup: PropTypes.object,
     currProject: PropTypes.object,
-
+    refreshTypeList: PropTypes.func,
     uid: PropTypes.number,
     fetchGroupMemberList: PropTypes.func,
     fetchGroupMsg: PropTypes.func,
     saveType: PropTypes.func,
-    delMember: PropTypes.func,
+    delType: PropTypes.func,
     changeMemberRole: PropTypes.func,
     role: PropTypes.string
   };
@@ -90,16 +89,6 @@ class TypePanel extends Component {
       visible: true
     });
   };
-
-  // // 重新获取列表
-  // reFetchList = () => {
-  //   this.props.fetchGroupMemberList(this.props.currGroup._id).then(res => {
-  //     this.setState({
-  //       userInfo: arrayAddKey(res.payload.data.data),
-  //       visible: false
-  //     });
-  //   });
-  // };
 
   // 保存新增或修改的自定义类型数据
   handleSave = () => {
@@ -127,7 +116,8 @@ class TypePanel extends Component {
           selectTypeContent: '',
           visible: false
         });
-        // this.reFetchList(); // 添加成功后重新获取分组成员列表
+
+        this.refreshTypeList(); // 添加成功后重新获取分组成员列表
       }
     });
   };
@@ -141,19 +131,16 @@ class TypePanel extends Component {
 
   // 删 - 删除分组成员
 
-  deleteConfirm = member_uid => {
+  deleteConfirm = typeId => {
     return () => {
-      const id = this.props.currGroup._id;
-
       this.props
-        .delMember({
-          id,
-          member_uid
+        .delType({
+          id: typeId
         })
         .then(res => {
           if (!res.payload.data.errcode) {
             message.success(res.payload.data.errmsg);
-            this.reFetchList(); // 添加成功后重新获取分组成员列表
+            this.refreshTypeList(); // 添加成功后重新获取分组成员列表
           }
         });
     };
@@ -174,7 +161,7 @@ class TypePanel extends Component {
       .then(res => {
         if (!res.payload.data.errcode) {
           message.success(res.payload.data.errmsg);
-          this.reFetchList(); // 添加成功后重新获取分组成员列表
+          this.refreshTypeList(); // 添加成功后重新获取分组成员列表
         }
       });
   };
@@ -230,6 +217,15 @@ class TypePanel extends Component {
     });
   }
 
+  editType(record) {
+    this.setState({
+      selectTypeId: record._id,
+      selectTypeName: record.name,
+      selectTypeContent: record.content,
+      visible: true
+    });
+  }
+
   render() {
     // console.log('++++++++++++++++++++++++');
     // console.log(this.props.typeList);
@@ -243,63 +239,45 @@ class TypePanel extends Component {
         render: (text, record) => {
           return (
             <div
+              title={'点击编辑类型'}
               className="m-user"
               onClick={() => {
-                this.setState({
-                  selectTypeId: record._id,
-                  selectTypeName: record.name,
-                  selectTypeContent: record.content,
-                  visible: true
-                });
+                this.editType(record);
               }}
             >
-              {' '}
-              <p> {text}</p>{' '}
+              <p> {text}</p>
             </div>
           );
         }
       },
-
       {
         title: '操作',
         key: 'action',
         width: '300px',
         className: 'member-opration',
         render: (text, record) => {
-          if (this.state.role === 'owner' || this.state.role === 'admin') {
+          if (this.props.role === 'owner' || this.props.role === 'admin') {
             return (
               <div>
-                {' '}
-                <Select value={record.role + '-' + record.uid} className="select" onChange={this.changeUserRole}>
-                  {' '}
-                  <Option value={'owner-' + record.uid}>组长</Option>{' '}
-                  <Option value={'dev-' + record.uid}>开发者</Option>{' '}
-                  <Option value={'guest-' + record.uid}>访客</Option>{' '}
-                </Select>{' '}
+                <Button
+                  icon="edit"
+                  className="btn-default"
+                  onClick={() => {
+                    this.editType(record);
+                  }}
+                />
                 <Popconfirm
                   placement="topRight"
                   title="你确定要删除吗? "
-                  onConfirm={this.deleteConfirm(record.uid)}
+                  onConfirm={this.deleteConfirm(record._id)}
                   okText="确定"
                   cancelText=""
                 >
-                  {' '}
-                  <Button type="danger" icon="delete" className="btn-danger" />{' '}
+                  <Button type="danger" icon="delete" className="btn-danger" />
                   {/* <Icon type="delete" className="btn-danger"/> */}
-                </Popconfirm>{' '}
+                </Popconfirm>
               </div>
             );
-          } else {
-            // 非管理员可以看到权限 但无法修改
-            if (record.role === 'owner') {
-              return '组长';
-            } else if (record.role === 'dev') {
-              return '开发者';
-            } else if (record.role === 'guest') {
-              return '访客';
-            } else {
-              return '';
-            }
           }
         }
       }
@@ -307,7 +285,6 @@ class TypePanel extends Component {
 
     return (
       <div className="m-panel">
-        {' '}
         {this.state.visible ? (
           <Modal
             title="编辑自定义类型"
@@ -317,15 +294,11 @@ class TypePanel extends Component {
             width="1000px"
             okText="保存"
           >
-            {' '}
-            <Row gutter={6} className="modal-input">
-              {' '}
+            <Row type="flex" gutter={6} className="modal-input" align="middle">
               <Col span="2">
-                {' '}
-                <div className="typenamelabel">类型名: </div>{' '}
-              </Col>{' '}
+                <div className="typenamelabel">类型名: </div>
+              </Col>
               <Col span="22">
-                {' '}
                 <Input
                   defaultValue={this.state.selectTypeName}
                   placeholder="请输入类型名"
@@ -334,18 +307,12 @@ class TypePanel extends Component {
                       selectTypeName: e.target.value
                     });
                   }}
-                />{' '}
-              </Col>{' '}
-            </Row>{' '}
+                />
+              </Col>
+            </Row>
             <Row gutter={6} className="modal-input">
-              {' '}
               <Col span="24">
-                {' '}
-                <hr
-                  style={{
-                    border: '1px solid rgb(233, 233, 233)'
-                  }}
-                />{' '}
+                <hr className="area-split" />
                 <ResBodySchema
                   onChange={text => {
                     this.setState({
@@ -354,20 +321,18 @@ class TypePanel extends Component {
                   }}
                   isMock={true}
                   data={this.state.selectTypeContent}
-                />{' '}
-              </Col>{' '}
-            </Row>{' '}
+                />
+              </Col>
+            </Row>
           </Modal>
         ) : (
           ''
         )}
         {this.props.role === 'owner' || this.props.role === 'admin' ? (
           <div className="btn-container">
-            {' '}
             <Button className="btn" type="primary" onClick={this.showAddMemberModal}>
-              {' '}
-              添加类型{' '}
-            </Button>{' '}
+              添加类型
+            </Button>
           </div>
         ) : (
           ''
@@ -379,7 +344,7 @@ class TypePanel extends Component {
           locale={{
             emptyText: <ErrMsg type="noType" />
           }}
-        />{' '}
+        />
       </div>
     );
   }
