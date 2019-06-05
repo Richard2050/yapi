@@ -45,4 +45,5 @@ client/plugin-module.js
 .vscode
 /iconfont
 static/autoCreated/
-static/prd
+static/prd/
+static/prd/assets.js
