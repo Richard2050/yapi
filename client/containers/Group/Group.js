@@ -85,7 +85,7 @@ export default class Group extends Component {
               backgroundColor: '#fff'
             }}
           >
-            <Tabs type="card" className="m-tab tabs-large" style={{ height: '100%' }} defaultActiveKey="5">
+            <Tabs type="card" className="m-tab tabs-large" style={{ height: '100%' }} defaultActiveKey="1">
               <TabPane tab="项目列表" key="1">
                 <ProjectList />
               </TabPane>

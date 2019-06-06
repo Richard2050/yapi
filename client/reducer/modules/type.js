@@ -154,10 +154,10 @@ export function addMember(param) {
 }
 
 // 删除项目成员
-export function delType(param) {
+export async function delType(param) {
   return {
     type: DEL_TYPE,
-    payload: axios.post('/api/type/del', param)
+    payload: await axios.post('/api/type/del', param)
   };
 }
 

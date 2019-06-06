@@ -117,7 +117,7 @@ class TypePanel extends Component {
           visible: false
         });
 
-        this.refreshTypeList(); // 添加成功后重新获取分组成员列表
+        this.props.refreshTypeList();
       }
     });
   };
@@ -130,44 +130,17 @@ class TypePanel extends Component {
   };
 
   // 删 - 删除分组成员
-
   deleteConfirm = typeId => {
-    return () => {
-      this.props
-        .delType({
-          id: typeId
-        })
-        .then(res => {
-          if (!res.payload.data.errcode) {
-            message.success(res.payload.data.errmsg);
-            this.refreshTypeList(); // 添加成功后重新获取分组成员列表
-          }
-        });
+    return async () => {
+      const res = await this.props.delType({ id: typeId });
+      if (!res.payload.data.errcode) {
+        message.success(res.payload.data.errmsg);
+        this.props.refreshTypeList();
+      }
     };
   };
 
-  // 改 - 修改成员权限
-  changeUserRole = e => {
-    const id = this.props.currGroup._id;
-    const role = e.split('-')[0];
-    const member_uid = e.split('-')[1];
-
-    this.props
-      .changeMemberRole({
-        id,
-        member_uid,
-        role
-      })
-      .then(res => {
-        if (!res.payload.data.errcode) {
-          message.success(res.payload.data.errmsg);
-          this.refreshTypeList(); // 添加成功后重新获取分组成员列表
-        }
-      });
-  };
-
   // 关闭模态框
-
   handleCancel = () => {
     this.setState({
       visible: false

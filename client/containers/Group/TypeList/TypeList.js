@@ -180,13 +180,13 @@ class TypeList extends Component {
     this.getTypeList(currGroupId);
   }
 
-  getTypeList(currGroupId) {
-    this.props.fetchTypeList(currGroupId).then(res => {
+  getTypeList = currGroupId => {
+    this.props.fetchTypeList(currGroupId || this.props.currGroup._id).then(res => {
       this.setState({
         typeList: arrayAddKey(res.payload.data.data)
       });
     });
-  }
+  };
 
   @autobind
   onUserSelect(uids) {

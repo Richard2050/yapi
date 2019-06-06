@@ -72,7 +72,6 @@ class ProjectList extends Component {
   }
 
   // 获取 ProjectCard 组件的关注事件回调，收到后更新数据
-
   receiveRes = () => {
     this.props.fetchProjectList(this.props.currGroup._id, this.props.currPage);
   };
