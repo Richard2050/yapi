@@ -4,10 +4,10 @@ import { connect } from 'react-redux';
 import { Collapse } from 'antd';
 import './TypeList.scss';
 // import { autobind } from 'core-decorators';
-import { fetchGroupMsg, addMember, delMember, changeMemberRole } from '../../../reducer/modules/group.js';
-import { fetchTypeList } from '../../../reducer/modules/type.js';
+import { fetchGroupMsg, addMember, delMember, changeMemberRole } from '../../reducer/modules/group.js';
+import { fetchTypeList } from '../../reducer/modules/type.js';
 import TypePanel from './TypePanel';
-import { TypeGroups } from '../../../../const';
+import { TypeGroups } from '../../../const';
 
 const Panel = Collapse.Panel;
 

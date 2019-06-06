@@ -7,13 +7,13 @@ import { Table, Button, Modal, Row, Col, message, Popconfirm, Input } from 'antd
 
 import './TypeList.scss';
 
-import { fetchGroupMemberList, fetchGroupMsg } from '../../../reducer/modules/group.js';
+import { fetchGroupMemberList, fetchGroupMsg } from '../../reducer/modules/group.js';
 
-import { saveType, delType } from '../../../reducer/modules/type.js';
+import { saveType, delType } from '../../reducer/modules/type.js';
 
-import ErrMsg from '../../../components/ErrMsg/ErrMsg.js';
+import ErrMsg from '../../components/ErrMsg/ErrMsg.js';
 
-import { MOCK_SOURCE } from '../../../constants/variable.js';
+import { MOCK_SOURCE } from '../../constants/variable.js';
 const jSchema = require('json-schema-editor-visual');
 
 const ResBodySchema = jSchema({

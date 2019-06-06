@@ -1,7 +1,7 @@
 import React, { PureComponent as Component } from 'react';
 import GroupList from './GroupList/GroupList.js';
 import ProjectList from './ProjectList/ProjectList.js';
-import TypeList from './TypeList/TypeList.js';
+import TypeList from '../TypeList/TypeList.js';
 import MemberList from './MemberList/MemberList.js';
 import GroupLog from './GroupLog/GroupLog.js';
 import GroupSetting from './GroupSetting/GroupSetting.js';
