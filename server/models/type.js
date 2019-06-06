@@ -51,9 +51,14 @@ class groupModel extends baseModel {
 
   getQueryObj(type, group_id, project_id) {
     let queryObj = {
-      group_id,
-      project_id
+      group_id
     };
+
+    if (project_id) {
+      queryObj.project_id = { $in: [project_id, undefined] };
+    } else {
+      queryObj.project_id = undefined;
+    }
 
     if (type) {
       queryObj.type = type;

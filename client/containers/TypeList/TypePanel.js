@@ -25,7 +25,7 @@ const ResBodySchema = jSchema({
   state => {
     return {
       currGroup: state.group.currGroup,
-      currProject: {},
+      currProject: state.project.currProject,
       uid: state.user.uid,
       role: state.group.role
     };

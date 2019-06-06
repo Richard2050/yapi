@@ -9,6 +9,7 @@ import { getProject } from '../../reducer/modules/project';
 import Interface from './Interface/Interface.js';
 import Activity from './Activity/Activity.js';
 import Setting from './Setting/Setting.js';
+import TypeList from '../TypeList/TypeList';
 import Loading from '../../components/Loading/Loading';
 import ProjectMember from './Setting/ProjectMember/ProjectMember.js';
 import ProjectData from './Setting/ProjectData/ProjectData.js';
@@ -78,6 +79,7 @@ export default class Project extends Component {
     const { match, location } = this.props;
     let routers = {
       interface: { name: '接口', path: '/project/:id/interface/:action', component: Interface },
+      type: { name: '自定义类型列表', path: '/project/:id/type', component: TypeList },
       activity: { name: '动态', path: '/project/:id/activity', component: Activity },
       data: { name: '数据管理', path: '/project/:id/data', component: ProjectData },
       members: { name: '成员管理', path: '/project/:id/members', component: ProjectMember },

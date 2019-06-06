@@ -27,6 +27,7 @@ function arrayAddKey(arr) {
   state => {
     return {
       currGroup: state.group.currGroup,
+      currProject: state.project.currProject,
       uid: state.user.uid,
       role: state.group.role
     };
@@ -54,6 +55,7 @@ class TypeList extends Component {
   }
   static propTypes = {
     currGroup: PropTypes.object,
+    currProject: PropTypes.object,
     uid: PropTypes.number,
     fetchTypeList: PropTypes.func,
     fetchGroupMsg: PropTypes.func,
@@ -63,12 +65,11 @@ class TypeList extends Component {
     role: PropTypes.string
   };
 
-  // 重新获取列表
-  refetchList = () => {
-    this.props.fetchTypeList(this.props.currGroup._id).then(res => {
+  getTypeList = currGroupId => {
+    const { currGroup, currProject } = this.props;
+    this.props.fetchTypeList(currGroupId || currGroup._id, currProject._id).then(res => {
       this.setState({
-        userInfo: arrayAddKey(res.payload.data.data),
-        visible: false
+        typeList: arrayAddKey(res.payload.data.data)
       });
     });
   };
@@ -103,14 +104,6 @@ class TypeList extends Component {
 
     this.getTypeList(currGroupId);
   }
-
-  getTypeList = currGroupId => {
-    this.props.fetchTypeList(currGroupId || this.props.currGroup._id).then(res => {
-      this.setState({
-        typeList: arrayAddKey(res.payload.data.data)
-      });
-    });
-  };
 
   render() {
     const typeSeparateList = {};
