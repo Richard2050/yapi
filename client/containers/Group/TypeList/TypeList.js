@@ -1,18 +1,14 @@
 import React, { PureComponent as Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Table, Select, Button, Modal, Row, Col, message, Popconfirm, Collapse } from 'antd';
-import { Link } from 'react-router-dom';
+import { Collapse } from 'antd';
 import './TypeList.scss';
-import { autobind } from 'core-decorators';
+// import { autobind } from 'core-decorators';
 import { fetchGroupMsg, addMember, delMember, changeMemberRole } from '../../../reducer/modules/group.js';
 import { fetchTypeList } from '../../../reducer/modules/type.js';
-import ErrMsg from '../../../components/ErrMsg/ErrMsg.js';
-import UsernameAutoComplete from '../../../components/UsernameAutoComplete/UsernameAutoComplete.js';
 import TypePanel from './TypePanel';
 import { TypeGroups } from '../../../../const';
 
-const Option = Select.Option;
 const Panel = Collapse.Panel;
 
 function arrayAddKey(arr) {
@@ -67,12 +63,6 @@ class TypeList extends Component {
     role: PropTypes.string
   };
 
-  showAddMemberModal = () => {
-    this.setState({
-      visible: true
-    });
-  };
-
   // 重新获取列表
   refetchList = () => {
     this.props.fetchTypeList(this.props.currGroup._id).then(res => {
@@ -80,72 +70,6 @@ class TypeList extends Component {
         userInfo: arrayAddKey(res.payload.data.data),
         visible: false
       });
-    });
-  };
-
-  // 增 - 添加成员
-
-  handleOk = () => {
-    this.props
-      .addMember({
-        id: this.props.currGroup._id,
-        member_uids: this.state.inputUids,
-        role: this.state.inputRole
-      })
-      .then(res => {
-        if (!res.payload.data.errcode) {
-          const { add_members, exist_members } = res.payload.data.data;
-          const addLength = add_members.length;
-          const existLength = exist_members.length;
-          this.setState({
-            inputRole: 'dev',
-            inputUids: []
-          });
-          message.success(`添加成功! 已成功添加 ${addLength} 人，其中 ${existLength} 人已存在`);
-          this.refetchList(); // 添加成功后重新获取分组成员列表
-        }
-      });
-  };
-  // 添加成员时 选择新增成员权限
-
-  changeNewMemberRole = value => {
-    this.setState({
-      inputRole: value
-    });
-  };
-
-  // 删 - 删除分组成员
-
-  deleteConfirm = member_uid => {
-    return () => {
-      const id = this.props.currGroup._id;
-      this.props.delMember({ id, member_uid }).then(res => {
-        if (!res.payload.data.errcode) {
-          message.success(res.payload.data.errmsg);
-          this.refetchList(); // 添加成功后重新获取分组成员列表
-        }
-      });
-    };
-  };
-
-  // 改 - 修改成员权限
-  changeUserRole = e => {
-    const id = this.props.currGroup._id;
-    const role = e.split('-')[0];
-    const member_uid = e.split('-')[1];
-    this.props.changeMemberRole({ id, member_uid, role }).then(res => {
-      if (!res.payload.data.errcode) {
-        message.success(res.payload.data.errmsg);
-        this.refetchList(); // 添加成功后重新获取分组成员列表
-      }
-    });
-  };
-
-  // 关闭模态框
-
-  handleCancel = () => {
-    this.setState({
-      visible: false
     });
   };
 
@@ -187,13 +111,6 @@ class TypeList extends Component {
       });
     });
   };
-
-  @autobind
-  onUserSelect(uids) {
-    this.setState({
-      inputUids: uids
-    });
-  }
 
   render() {
     const typeSeparateList = {};

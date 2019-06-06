@@ -16,10 +16,6 @@
         // box-shadow: $box-shadow-panel;
     }
 
-    .m-tab {
-        overflow: inherit !important;
-    }
-
     .btn-container {
         text-align: right;
         position: absolute;
@@ -41,17 +37,10 @@
             text-align: left;
         }
 
-        .select {
-            width: 1.2rem;
-        }
     }
 
     .member-opration {
         text-align: right;
-
-        .select {
-            width: 1.2rem;
-        }
 
         .btn-danger {
             margin-left: .08rem;

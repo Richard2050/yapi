@@ -3,14 +3,11 @@ import PropTypes from 'prop-types';
 
 import { connect } from 'react-redux';
 
-import { Table, Select, Button, Modal, Row, Col, message, Popconfirm, Input } from 'antd';
+import { Table, Button, Modal, Row, Col, message, Popconfirm, Input } from 'antd';
 
-import { Link } from 'react-router-dom';
 import './TypeList.scss';
 
-import { autobind } from 'core-decorators';
-
-import { fetchGroupMemberList, fetchGroupMsg, changeMemberRole } from '../../../reducer/modules/group.js';
+import { fetchGroupMemberList, fetchGroupMsg } from '../../../reducer/modules/group.js';
 
 import { saveType, delType } from '../../../reducer/modules/type.js';
 
@@ -23,16 +20,6 @@ const ResBodySchema = jSchema({
   lang: 'zh_CN',
   mock: MOCK_SOURCE
 });
-const Option = Select.Option;
-
-function arrayAddKey(arr) {
-  return arr.map((item, index) => {
-    return {
-      ...item,
-      key: index
-    };
-  });
-}
 
 @connect(
   state => {
@@ -48,8 +35,7 @@ function arrayAddKey(arr) {
     fetchGroupMemberList,
     fetchGroupMsg,
     saveType,
-    delType,
-    changeMemberRole
+    delType
   }
 )
 class TypePanel extends Component {
@@ -80,11 +66,10 @@ class TypePanel extends Component {
     fetchGroupMsg: PropTypes.func,
     saveType: PropTypes.func,
     delType: PropTypes.func,
-    changeMemberRole: PropTypes.func,
     role: PropTypes.string
   };
 
-  showAddMemberModal = () => {
+  showAddTypeModal = () => {
     this.setState({
       visible: true
     });
@@ -121,13 +106,6 @@ class TypePanel extends Component {
       }
     });
   };
-  // 添加成员时 选择新增成员权限
-
-  changeNewMemberRole = value => {
-    this.setState({
-      inputRole: value
-    });
-  };
 
   // 删 - 删除分组成员
   deleteConfirm = typeId => {
@@ -147,49 +125,6 @@ class TypePanel extends Component {
     });
   };
 
-  componentWillReceiveProps(nextProps) {
-    // if (this._groupId !== this._groupId) {
-    //   return null;
-    // }
-    // if (this.props.currGroup._id !== nextProps.currGroup._id) {
-    //   this.props.fetchGroupMemberList(nextProps.currGroup._id).then(res => {
-    //     this.setState({
-    //       userInfo: arrayAddKey(res.payload.data.data)
-    //     });
-    //   });
-    //   this.props.fetchGroupMsg(nextProps.currGroup._id).then(res => {
-    //     this.setState({
-    //       role: res.payload.data.data.role
-    //     });
-    //   });
-    // }
-  }
-
-  componentDidMount() {
-    // console.log('console.log(this.props.typeList);');
-    // console.log(this.props.typeList);
-    // const currGroupId = (this._groupId = this.props.currGroup._id);
-    // if (!currGroupId) {
-    //   return;
-    // }
-    // this.props.fetchGroupMsg(currGroupId).then(res => {
-    //   this.setState({
-    //     role: res.payload.data.data.role
-    //   });
-    // });
-    // this.props.fetchGroupMemberList(currGroupId).then(res => {
-    //   this.setState({
-    //     userInfo: arrayAddKey(res.payload.data.data)
-    //   });
-    // });
-  }
-
-  @autobind onUserSelect(uids) {
-    this.setState({
-      inputUids: uids
-    });
-  }
-
   editType(record) {
     this.setState({
       selectTypeId: record._id,
@@ -200,9 +135,6 @@ class TypePanel extends Component {
   }
 
   render() {
-    // console.log('++++++++++++++++++++++++');
-    // console.log(this.props.typeList);
-
     const columns = [
       {
         title: '类型名称',
@@ -303,7 +235,7 @@ class TypePanel extends Component {
         )}
         {this.props.role === 'owner' || this.props.role === 'admin' ? (
           <div className="btn-container">
-            <Button className="btn" type="primary" onClick={this.showAddMemberModal}>
+            <Button className="btn" type="primary" onClick={this.showAddTypeModal}>
               添加类型
             </Button>
           </div>
