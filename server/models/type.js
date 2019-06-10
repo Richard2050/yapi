@@ -1,6 +1,6 @@
 const yapi = require('../yapi.js');
 const baseModel = require('./base.js');
-const { TypeGroups } = require('../../const');
+const { limitType, defaultLimitTypeValue } = require('../../const');
 
 class groupModel extends baseModel {
   getName() {
@@ -17,9 +17,10 @@ class groupModel extends baseModel {
       content: String,
       //   desc: String,
       name: String,
-      type: {
+      limit: {
         type: String,
-        enum: TypeGroups.map(item => item.value)
+        enum: limitType.map(item => item.value),
+        default: defaultLimitTypeValue
       }
     };
   }

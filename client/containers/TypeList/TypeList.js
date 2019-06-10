@@ -7,7 +7,6 @@ import './TypeList.scss';
 import { fetchGroupMsg, addMember, delMember, changeMemberRole } from '../../reducer/modules/group.js';
 import { fetchTypeList } from '../../reducer/modules/type.js';
 import TypePanel from './TypePanel';
-import { TypeGroups } from '../../../const';
 
 const Panel = Collapse.Panel;
 
@@ -106,26 +105,11 @@ class TypeList extends Component {
   }
 
   render() {
-    const typeSeparateList = {};
-
-    this.state.typeList.forEach(item => {
-      const _type = item.type;
-      typeSeparateList[_type] = typeSeparateList[_type] || [];
-      typeSeparateList[_type].push(item);
-    });
-
+    const { typeList } = this.state;
     return (
       <div className="typelist m-panel">
-        <Collapse defaultActiveKey={TypeGroups[0].value} accordion>
-          {TypeGroups.map(item => {
-            const _typeList = typeSeparateList[item.value] || [];
-            return (
-              <Panel header={`${item.name} 共 (${_typeList.length}) 个类型`} key={item.value}>
-                <TypePanel type={item} typeList={_typeList} refreshTypeList={this.getTypeList} />
-              </Panel>
-            );
-          })}
-        </Collapse>
+        <div>共 ({typeList.length}) 个类型</div>
+        <TypePanel typeList={typeList} refreshTypeList={this.getTypeList} />
       </div>
     );
   }

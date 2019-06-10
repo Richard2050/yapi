@@ -1,19 +1,14 @@
 import React, { PureComponent as Component } from 'react';
 import PropTypes from 'prop-types';
-
 import { connect } from 'react-redux';
-
 import { Table, Button, Modal, Row, Col, message, Popconfirm, Input } from 'antd';
-
+import { fetchGroupMemberList, fetchGroupMsg } from '../../reducer/modules/group.js';
+import { saveType, delType } from '../../reducer/modules/type.js';
+import ErrMsg from '../../components/ErrMsg/ErrMsg.js';
+import { MOCK_SOURCE } from '../../constants/variable.js';
+import { limitType, defaultLimitTypeValue } from '../../../const';
 import './TypeList.scss';
 
-import { fetchGroupMemberList, fetchGroupMsg } from '../../reducer/modules/group.js';
-
-import { saveType, delType } from '../../reducer/modules/type.js';
-
-import ErrMsg from '../../components/ErrMsg/ErrMsg.js';
-
-import { MOCK_SOURCE } from '../../constants/variable.js';
 const jSchema = require('json-schema-editor-visual');
 
 const ResBodySchema = jSchema({
@@ -46,8 +41,8 @@ class TypePanel extends Component {
       selectTypeId: '',
       selectTypeName: '',
       selectTypeContent: '',
+      selectTypeLimit: '1', //不可更改
       userInfo: [],
-      // role: '',
       visible: false,
       dataSource: [],
       inputUids: [],
@@ -57,7 +52,6 @@ class TypePanel extends Component {
 
   static propTypes = {
     typeList: PropTypes.array,
-    type: PropTypes.object,
     currGroup: PropTypes.object,
     currProject: PropTypes.object,
     refreshTypeList: PropTypes.func,
@@ -82,7 +76,7 @@ class TypePanel extends Component {
       project_id: this.props.currProject._id,
       name: this.state.selectTypeName,
       content: this.state.selectTypeContent,
-      type: this.props.type.value
+      limit: this.state.selectTypeLimit
     };
 
     let _id = this.state.selectTypeId;
@@ -130,6 +124,7 @@ class TypePanel extends Component {
       selectTypeId: record._id,
       selectTypeName: record.name,
       selectTypeContent: record.content,
+      selectTypeLimit: record.limit,
       visible: true
     });
   }
@@ -151,6 +146,33 @@ class TypePanel extends Component {
               }}
             >
               <p> {text}</p>
+            </div>
+          );
+        }
+      },
+      {
+        title: '类型说明',
+        dataIndex: 'desc',
+        className: 'typepanel-column',
+        key: 'desc',
+        render: text => {
+          return (
+            <div title="类型说明" className="m-user">
+              <p> {text}</p>
+            </div>
+          );
+        }
+      },
+      {
+        title: '限制类型',
+        dataIndex: 'limit',
+        className: 'typepanel-column',
+        key: 'limit',
+        render: value => {
+          value = value || defaultLimitTypeValue;
+          return (
+            <div title="限制类型" className="m-user">
+              <p>{limitType.find(item => item.value == value).name}</p>
             </div>
           );
         }
@@ -187,7 +209,7 @@ class TypePanel extends Component {
         }
       }
     ];
-
+    console.log(this.props.role);
     return (
       <div className="m-panel">
         {this.state.visible ? (
@@ -199,6 +221,22 @@ class TypePanel extends Component {
             width="1000px"
             okText="保存"
           >
+            <Row type="flex" gutter={6} className="modal-input" align="middle">
+              <Col span="2">
+                <div className="typenamelabel">类型名: </div>
+              </Col>
+              <Col span="22">
+                <Input
+                  defaultValue={this.state.selectTypeName}
+                  placeholder="请输入类型名"
+                  onChange={e => {
+                    this.setState({
+                      selectTypeName: e.target.value
+                    });
+                  }}
+                />
+              </Col>
+            </Row>
             <Row type="flex" gutter={6} className="modal-input" align="middle">
               <Col span="2">
                 <div className="typenamelabel">类型名: </div>

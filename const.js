@@ -1,1 +1,7 @@
-module.exports.TypeGroups = [{ name: '响应类型', value: 'response' }, { name: '扩展类型', value: 'extend' }];
+module.exports.limitType = [
+  { name: '无可修改', value: '1' },
+  { name: '可扩展', value: '2' },
+  { name: '可修改', value: '3' }
+];
+
+module.exports.defaultLimitTypeValue = '1';
