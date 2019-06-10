@@ -40,8 +40,6 @@
     }
 
     .member-opration {
-        text-align: right;
-
         .btn-danger {
             margin-left: .08rem;
             // background-color: transparent;
@@ -49,7 +47,7 @@
         }
 
         .btn-default {
-            margin-left: .08rem;
+            margin-right: .08rem;
             background-color: #f7f7f7;
             border-color: transparent;
         }

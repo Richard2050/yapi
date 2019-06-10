@@ -209,7 +209,7 @@ class TypePanel extends Component {
         }
       }
     ];
-    console.log(this.props.role);
+
     return (
       <div className="m-panel">
         {this.state.visible ? (
