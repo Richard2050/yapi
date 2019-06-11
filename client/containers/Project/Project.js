@@ -5,7 +5,7 @@ import { Route, Switch, Redirect, matchPath } from 'react-router-dom';
 import { Subnav } from '../../components/index';
 import { fetchGroupMsg } from '../../reducer/modules/group';
 import { setBreadcrumb } from '../../reducer/modules/user';
-import { getProject } from '../../reducer/modules/project';
+import { getProject, clearProjectInfo } from '../../reducer/modules/project';
 import Interface from './Interface/Interface.js';
 import Activity from './Activity/Activity.js';
 import Setting from './Setting/Setting.js';
@@ -23,6 +23,7 @@ const plugin = require('client/plugin.js');
   },
   {
     getProject,
+    clearProjectInfo,
     fetchGroupMsg,
     setBreadcrumb
   }
@@ -32,6 +33,7 @@ export default class Project extends Component {
     match: PropTypes.object,
     curProject: PropTypes.object,
     getProject: PropTypes.func,
+    clearProjectInfo: PropTypes.func,
     location: PropTypes.object,
     fetchGroupMsg: PropTypes.func,
     setBreadcrumb: PropTypes.func,
@@ -73,6 +75,10 @@ export default class Project extends Component {
         }
       ]);
     }
+  }
+
+  async componentWillUnmount() {
+    await this.props.clearProjectInfo();
   }
 
   render() {

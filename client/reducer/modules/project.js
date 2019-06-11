@@ -11,6 +11,7 @@ const PROJECT_UPDATE = 'yapi/project/PROJECT_UPDATE';
 const PROJECT_UPDATE_ENV = 'yapi/project/PROJECT_UPDATE_ENV';
 const PROJECT_UPSET = 'yapi/project/PROJECT_UPSET';
 const GET_CURR_PROJECT = 'yapi/project/GET_CURR_PROJECT';
+const CLEAR_CURR_PROJECT = 'yapi/project/CLEAR_CURR_PROJECT';
 const GET_PEOJECT_MEMBER = 'yapi/project/GET_PEOJECT_MEMBER';
 const ADD_PROJECT_MEMBER = 'yapi/project/ADD_PROJECT_MEMBER';
 const DEL_PROJECT_MEMBER = 'yapi/project/DEL_PROJECT_MEMBER';
@@ -52,7 +53,12 @@ export default (state = initialState, action) => {
         currProject: action.payload.data.data
       };
     }
-
+    case CLEAR_CURR_PROJECT: {
+      return {
+        ...state,
+        currProject: action.payload
+      };
+    }
     case FETCH_PROJECT_LIST: {
       return {
         ...state,
@@ -288,6 +294,13 @@ export async function getProject(id) {
   return {
     type: GET_CURR_PROJECT,
     payload: result
+  };
+}
+
+export async function clearProjectInfo(id) {
+  return {
+    type: CLEAR_CURR_PROJECT,
+    payload: {}
   };
 }
 
