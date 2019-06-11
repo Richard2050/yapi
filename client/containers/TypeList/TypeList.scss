@@ -24,20 +24,7 @@
         top: -12px;
     }
 
-    .modal-input {
-        display: flex;
-        align-items: center;
-        margin-bottom: .24rem;
 
-        .label {
-            text-align: right;
-        }
-
-        .typenamelabel {
-            text-align: left;
-        }
-
-    }
 
     .member-opration {
         .btn-danger {
@@ -86,4 +73,19 @@
 .area-split {
     border: 1px solid rgb(243, 243, 243);
     margin-top: 10px;
+}
+
+.modal-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: .24rem;
+
+    .label {
+        text-align: right;
+    }
+
+    .typenamelabel {
+        text-align: left;
+    }
+
 }

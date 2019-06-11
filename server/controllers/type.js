@@ -45,7 +45,6 @@ class typeController extends baseController {
    * @example ./api/group/add.json
    */
   async save(ctx) {
-    console.log('===================');
     const { id } = ctx.params;
     if (id) {
       await this.up(ctx);

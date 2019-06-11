@@ -41,7 +41,7 @@ class TypePanel extends Component {
       selectTypeId: '',
       selectTypeName: '',
       selectTypeContent: '',
-      selectTypeLimit: '1', //不可更改
+      selectTypeLimit: defaultLimitTypeValue, //不可更改
       userInfo: [],
       visible: false,
       dataSource: [],
@@ -115,7 +115,11 @@ class TypePanel extends Component {
   // 关闭模态框
   handleCancel = () => {
     this.setState({
-      visible: false
+      visible: false,
+      selectTypeId: '',
+      selectTypeName: '',
+      selectTypeContent: '',
+      selectTypeLimit: defaultLimitTypeValue
     });
   };
 
@@ -180,7 +184,7 @@ class TypePanel extends Component {
       {
         title: '操作',
         key: 'action',
-        width: '300px',
+        width: '150px',
         className: 'member-opration',
         render: (text, record) => {
           if (this.props.role === 'owner' || this.props.role === 'admin') {
@@ -214,14 +218,14 @@ class TypePanel extends Component {
       <div className="m-panel">
         {this.state.visible ? (
           <Modal
-            title="编辑自定义类型"
+            title={(this.state.selectTypeName ? '编辑' : '新增') + '自定义类型'}
             visible={this.state.visible}
             onOk={this.handleSave}
             onCancel={this.handleCancel}
             width="1000px"
             okText="保存"
           >
-            <Row type="flex" gutter={6} className="modal-input" align="middle">
+            <Row type="flex" gutter={6} className="modal-row" align="middle">
               <Col span="2">
                 <div className="typenamelabel">类型名: </div>
               </Col>
@@ -237,7 +241,7 @@ class TypePanel extends Component {
                 />
               </Col>
             </Row>
-            <Row type="flex" gutter={6} className="modal-input" align="middle">
+            <Row type="flex" gutter={6} className="modal-row" align="middle">
               <Col span="2">
                 <div className="typenamelabel">类型名: </div>
               </Col>
@@ -253,7 +257,7 @@ class TypePanel extends Component {
                 />
               </Col>
             </Row>
-            <Row gutter={6} className="modal-input">
+            <Row gutter={6} className="modal-row">
               <Col span="24">
                 <hr className="area-split" />
                 <ResBodySchema
