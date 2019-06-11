@@ -144,13 +144,7 @@ class TypePanel extends Component {
         key: 'name',
         render: (text, record) => {
           return (
-            <div
-              title={'点击编辑类型'}
-              className="m-user"
-              onClick={() => {
-                this.editType(record);
-              }}
-            >
+            <div className="m-user">
               <p> {text}</p>
             </div>
           );
@@ -193,11 +187,13 @@ class TypePanel extends Component {
             return (
               <div>
                 <Button
+                  title={!record.project_id ? '分类级别的类型不可编辑' : '点击编辑'}
                   icon="edit"
                   className="btn-default"
                   onClick={() => {
                     this.editType(record);
                   }}
+                  disabled={!record.project_id}
                 />
                 <Popconfirm
                   placement="topRight"
@@ -206,7 +202,13 @@ class TypePanel extends Component {
                   okText="确定"
                   cancelText=""
                 >
-                  <Button type="danger" icon="delete" className="btn-danger" />
+                  <Button
+                    title={!record.project_id ? '分类级别的类型不可删除' : '点击删除'}
+                    type="danger"
+                    icon="delete"
+                    className="btn-danger"
+                    disabled={!record.project_id}
+                  />
                   {/* <Icon type="delete" className="btn-danger"/> */}
                 </Popconfirm>
               </div>
