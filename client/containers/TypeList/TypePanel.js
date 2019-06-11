@@ -76,7 +76,8 @@ class TypePanel extends Component {
       project_id: this.props.currProject._id,
       name: this.state.selectTypeName,
       content: this.state.selectTypeContent,
-      limit: this.state.selectTypeLimit
+      limit: this.state.selectTypeLimit,
+      desc: JSON.parse(this.state.selectTypeContent).description
     };
 
     let _id = this.state.selectTypeId;
@@ -139,6 +140,7 @@ class TypePanel extends Component {
         title: '类型名称',
         dataIndex: 'name',
         className: 'typepanel-column',
+        width: '300px',
         key: 'name',
         render: (text, record) => {
           return (
