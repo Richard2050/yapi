@@ -68,7 +68,7 @@ class typeController extends baseController {
    * @example ./api/group/add.json
    */
   async add(ctx) {
-    const { name, group_id, project_id, content, type } = ctx.params;
+    const { name, group_id, project_id, content, limit } = ctx.params;
     let typeInst = yapi.getInst(typeModel);
     let checkRepeat = await typeInst.checkRepeat(name, group_id, project_id);
     if (checkRepeat > 0) {
@@ -80,14 +80,14 @@ class typeController extends baseController {
       group_id,
       project_id,
       content,
-      type,
+      limit,
       uid: this.getUid(),
       add_time: yapi.commons.time(),
       up_time: yapi.commons.time()
     };
 
     let result = await typeInst.save(data);
-    result = yapi.commons.fieldSelect(result, ['_id', 'name', 'group_id', 'project_id', 'type']);
+    result = yapi.commons.fieldSelect(result, ['_id', 'name', 'group_id', 'project_id', 'limit']);
     let username = this.getUsername();
     yapi.commons.saveLog({
       content: `<a href="/user/profile/${this.getUid()}">${username}</a> 新增了自定义类型 <a href="/type/${

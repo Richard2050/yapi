@@ -1,12 +1,12 @@
 import React, { PureComponent as Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Table, Button, Modal, Row, Col, message, Popconfirm, Input } from 'antd';
+import { Table, Button, Modal, Row, Col, message, Popconfirm, Input, Radio } from 'antd';
 import { fetchGroupMemberList, fetchGroupMsg } from '../../reducer/modules/group.js';
 import { saveType, delType } from '../../reducer/modules/type.js';
 import ErrMsg from '../../components/ErrMsg/ErrMsg.js';
 import { MOCK_SOURCE } from '../../constants/variable.js';
-import { limitType, defaultLimitTypeValue } from '../../../const';
+import { LimitType, DefaultLimitTypeValue } from '../../../const';
 import './TypeList.scss';
 
 const jSchema = require('json-schema-editor-visual');
@@ -41,7 +41,7 @@ class TypePanel extends Component {
       selectTypeId: '',
       selectTypeName: '',
       selectTypeContent: '',
-      selectTypeLimit: defaultLimitTypeValue, //不可更改
+      selectTypeLimit: DefaultLimitTypeValue, //不可更改
       userInfo: [],
       visible: false,
       dataSource: [],
@@ -119,7 +119,7 @@ class TypePanel extends Component {
       selectTypeId: '',
       selectTypeName: '',
       selectTypeContent: '',
-      selectTypeLimit: defaultLimitTypeValue
+      selectTypeLimit: DefaultLimitTypeValue
     });
   };
 
@@ -173,10 +173,10 @@ class TypePanel extends Component {
         className: 'typepanel-column',
         key: 'limit',
         render: value => {
-          value = value || defaultLimitTypeValue;
+          value = value || DefaultLimitTypeValue;
           return (
             <div title="限制类型" className="m-user">
-              <p>{limitType.find(item => item.value == value).name}</p>
+              <p>{LimitType.find(item => item.value == value).name}</p>
             </div>
           );
         }
@@ -243,18 +243,23 @@ class TypePanel extends Component {
             </Row>
             <Row type="flex" gutter={6} className="modal-row" align="middle">
               <Col span="2">
-                <div className="typenamelabel">类型名: </div>
+                <div className="typenamelabel">限制类型: </div>
               </Col>
               <Col span="22">
-                <Input
-                  defaultValue={this.state.selectTypeName}
-                  placeholder="请输入类型名"
-                  onChange={e => {
+                <Radio.Group
+                  onChange={({ target }) => {
                     this.setState({
-                      selectTypeName: e.target.value
+                      selectTypeLimit: target.value
                     });
                   }}
-                />
+                  defaultValue={this.state.selectTypeLimit}
+                >
+                  {LimitType.map(item => (
+                    <Radio value={item.value} key={item.value} name={item.name}>
+                      {item.name}
+                    </Radio>
+                  ))}
+                </Radio.Group>
               </Col>
             </Row>
             <Row gutter={6} className="modal-row">
