@@ -22,6 +22,8 @@ const path = require('path');
 function handleHeaders(values) {
   let isfile = false,
     isHavaContentType = false;
+
+  values.req_headers = values.req_headers || [];
   if (values.req_body_type === 'form') {
     values.req_body_form.forEach(item => {
       if (item.type === 'file') {
@@ -35,6 +37,7 @@ function handleHeaders(values) {
         isHavaContentType = true;
       }
     });
+
     if (isHavaContentType === false) {
       values.req_headers.unshift({
         name: 'Content-Type',
@@ -42,16 +45,14 @@ function handleHeaders(values) {
       });
     }
   } else if (values.req_body_type === 'json') {
-    values.req_headers
-      ? values.req_headers.map(item => {
-          if (item.name === 'Content-Type') {
-            item.value = 'application/json';
-            isHavaContentType = true;
-          }
-        })
-      : [];
+    values.req_headers.map(item => {
+      if (item.name === 'Content-Type') {
+        item.value = 'application/json';
+        isHavaContentType = true;
+      }
+    });
+
     if (isHavaContentType === false) {
-      values.req_headers = values.req_headers || [];
       values.req_headers.unshift({
         name: 'Content-Type',
         value: 'application/json'
